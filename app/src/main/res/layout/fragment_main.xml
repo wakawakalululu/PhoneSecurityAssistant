@@ -1,0 +1,208 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:focusable="false"
+    >
+
+    <TextView
+        android:id="@+id/lbl_all_interfaces"
+        style="@style/Label"
+        android:focusable="false"
+        android:text="@string/lbl_all_interfaces"
+        app:layout_constraintEnd_toStartOf="@+id/lbl_listeners"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintHorizontal_chainStyle="spread"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/all_interfaces"
+        style="@style/Info"
+        android:focusable="false"
+        app:layout_constraintStart_toStartOf="@id/lbl_all_interfaces"
+        app:layout_constraintTop_toBottomOf="@id/lbl_all_interfaces"
+        tools:text="10.0.2.15\n10.0.2.16\nfec0::30db:80c7:e5f4:230a"
+        />
+
+    <TextView
+        android:id="@+id/lbl_listeners"
+        style="@style/Label"
+        android:focusable="false"
+        android:text="@string/lbl_listeners"
+        app:layout_constraintEnd_toStartOf="@id/tv_buttons"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toEndOf="@+id/lbl_all_interfaces"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/listeners"
+        style="@style/Info"
+        android:focusable="false"
+        app:layout_constraintEnd_toStartOf="@id/tv_buttons"
+        app:layout_constraintStart_toStartOf="@id/lbl_listeners"
+        app:layout_constraintTop_toBottomOf="@id/lbl_listeners"
+        tools:text="*:2222"
+        />
+
+    <!-- The status area sits below the tallest of the two columns above. -->
+    <androidx.constraintlayout.widget.Barrier
+        android:id="@+id/status_barrier"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:focusable="false"
+        app:barrierDirection="bottom"
+        app:constraint_referenced_ids="all_interfaces,listeners"
+        />
+
+    <!-- A small colored dot in front of each status line; tinted in code. -->
+    <ImageView
+        android:id="@+id/status_mode_dot"
+        android:layout_width="8dp"
+        android:layout_height="8dp"
+        android:contentDescription="@null"
+        android:focusable="false"
+        android:importantForAccessibility="no"
+        android:src="@drawable/ic_remote_dot"
+        app:layout_constraintBottom_toBottomOf="@id/status_mode"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="@id/status_mode" />
+
+    <TextView
+        android:id="@+id/status_mode"
+        style="@style/Info"
+        android:focusable="false"
+        android:paddingTop="@dimen/field_margin_top"
+        android:textIsSelectable="false"
+        android:textSize="12sp"
+        app:layout_constraintEnd_toStartOf="@id/tv_buttons"
+        app:layout_constraintStart_toEndOf="@id/status_mode_dot"
+        app:layout_constraintTop_toBottomOf="@id/status_barrier"
+        tools:text="提权模式：Root 权限（su）"
+        />
+
+    <ImageView
+        android:id="@+id/status_remote_dot"
+        android:layout_width="8dp"
+        android:layout_height="8dp"
+        android:contentDescription="@null"
+        android:focusable="false"
+        android:importantForAccessibility="no"
+        android:src="@drawable/ic_remote_dot"
+        app:layout_constraintBottom_toBottomOf="@id/status_remote"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="@id/status_remote" />
+
+    <TextView
+        android:id="@+id/status_remote"
+        style="@style/Info"
+        android:focusable="false"
+        android:paddingTop="@dimen/field_margin_top"
+        android:textIsSelectable="false"
+        android:textSize="12sp"
+        app:layout_constraintEnd_toStartOf="@id/tv_buttons"
+        app:layout_constraintStart_toEndOf="@id/status_remote_dot"
+        app:layout_constraintTop_toBottomOf="@id/status_mode"
+        tools:text="远程服务：frpc 运行中 · Tailscale 已停止 · 哪吒监控 未运行"
+        />
+
+    <com.google.android.material.divider.MaterialDivider
+        android:id="@+id/div"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:focusable="false"
+        app:layout_constraintEnd_toStartOf="@id/tv_buttons"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/status_remote"
+        />
+
+    <androidx.core.widget.NestedScrollView
+        android:id="@+id/logScroller"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:layout_margin="@dimen/log_field_margin"
+        android:focusable="true"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toStartOf="@id/tv_buttons"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/div"
+        >
+
+        <TextView
+            android:id="@+id/log"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:focusable="true"
+            android:textIsSelectable="true"
+            android:typeface="monospace"
+            tools:text="@tools:sample/lorem/random"
+            />
+    </androidx.core.widget.NestedScrollView>
+
+    <!-- Only visible in TV mode. -->
+    <LinearLayout
+        android:id="@+id/tv_buttons"
+        android:layout_width="160dp"
+        android:layout_height="wrap_content"
+        android:focusable="false"
+        android:orientation="vertical"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0"
+        >
+
+        <Button
+            android:id="@+id/tv_btn_start_action"
+            style="@style/TVButton.Menu"
+            android:text="@string/lbl_start"
+            android:textColor="?attr/startButtonTextColor"
+            />
+
+        <Button
+            android:id="@+id/tv_btn_settings"
+            style="@style/TVButton.Menu"
+            android:layout_marginTop="@dimen/section_margin_top"
+            android:text="@string/lbl_settings"
+            />
+
+        <Button
+            android:id="@+id/tv_btn_terminal"
+            style="@style/TVButton.Menu"
+            android:text="@string/ui_terminal"
+            />
+
+        <Button
+            android:id="@+id/tv_btn_remote"
+            style="@style/TVButton.Menu"
+            android:text="@string/ui_remote"
+            />
+
+        <Button
+            android:id="@+id/tv_btn_sync"
+            style="@style/TVButton.Menu"
+            android:text="@string/ui_sync"
+            />
+
+        <Button
+            android:id="@+id/tv_btn_remote_desktop"
+            style="@style/TVButton.Menu"
+            android:text="@string/ui_remote_desktop"
+            />
+
+        <Button
+            android:id="@+id/tv_btn_help"
+            style="@style/TVButton.Menu"
+            android:text="@string/action_help"
+            />
+
+        <Button
+            android:id="@+id/tv_btn_about"
+            style="@style/TVButton.Menu"
+            android:text="@string/lbl_about"
+            />
+    </LinearLayout>
+</androidx.constraintlayout.widget.ConstraintLayout>

@@ -1,0 +1,23 @@
+<!--suppress LongLine -->
+<vector xmlns:android="http://schemas.android.com/apk/res/android"
+        android:width="24dp"
+        android:height="24dp"
+        android:viewportWidth="300"
+        android:viewportHeight="300">
+
+    <!-- Shield -->
+    <path
+        android:fillColor="#ffffff"
+        android:pathData="M94,69 L206,69 L206,150 Q206,181 188,188 L150,244 L112,188 Q94,181 94,150 Z" />
+
+    <!-- Lock shackle (ring shape) -->
+    <path
+        android:fillColor="#ffffff"
+        android:pathData="M122,144 L122,119 Q122,100 150,100 Q178,100 178,119 L178,144 L169,144 L169,119 Q169,109 150,109 Q131,109 131,119 L131,144 Z" />
+
+    <!-- Lock body with keyhole cutout -->
+    <path
+        android:fillColor="#ffffff"
+        android:fillType="evenOdd"
+        android:pathData="M116,144 L184,144 L184,191 Q184,199 176,199 L124,199 Q116,199 116,191 L116,144 Z M155,168 A5,5 0 1,1 145,168 A5,5 0 1,1 155,168 Z M146,171 L154,171 L150,186 Z" />
+</vector>

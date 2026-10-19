@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--suppress LongLine --><resources>
+    <!-- ADB (无线调试) 模式使用的字符串。语言规则：中文为默认。 -->
+    <string name="adb_title">ADB 无线调试</string>
+    <string name="adb_pair_title">配对无线调试</string>
+    <string name="adb_pair_host">主机地址</string>
+    <string name="adb_pair_port">配对端口</string>
+    <string name="adb_pair_code">配对码</string>
+    <string name="adb_pair_hint">请在“开发者选项”中启用“无线调试”，然后点击“使用配对码配对设备”，并将屏幕上显示的配对端口和配对码填入下方。</string>
+    <string name="adb_pair_start">开始配对</string>
+    <string name="adb_pairing">正在配对…</string>
+    <string name="adb_pair_success">配对成功</string>
+    <string name="adb_pair_failed_fmt">配对失败：%1$s</string>
+    <string name="adb_connect">连接</string>
+    <string name="adb_disconnect">断开</string>
+    <string name="adb_connecting">正在连接…</string>
+    <string name="adb_disconnecting">正在断开…</string>
+    <string name="adb_connected">已连接</string>
+    <string name="adb_disconnected">未连接</string>
+    <string name="adb_status_fmt">状态：%1$s</string>
+    <string name="adb_port">连接端口</string>
+    <string name="adb_pair_first">连接失败，请先配对</string>
+    <string name="adb_need_pairing">需先配对</string>
+    <string name="adb_auth_failed">认证失败，请重新配对</string>
+    <string name="adb_connect_failed_fmt">连接失败：%1$s</string>
+    <string name="adb_exec_failed_fmt">执行命令失败：%1$s</string>
+    <string name="adb_not_connected">未连接 ADB，请先在设置中配对</string>
+    <string name="adb_invalid_input">请输入有效的主机、端口和配对码</string>
+    <string name="adb_unknown_error">未知错误</string>
+    <string name="adb_close">关闭</string>
+</resources>

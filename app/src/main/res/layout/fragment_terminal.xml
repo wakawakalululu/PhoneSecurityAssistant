@@ -1,0 +1,288 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  ~ Built-in terminal screen.
+  ~
+  ~ Single-root vertical LinearLayout: only the console (FrameLayout below)
+  ~ scrolls; the rest of the page is fixed, so the page itself never scrolls.
+  ~ D-pad focus chain: mode button → quick actions → input → send → action row.
+  ~ The console is intentionally NOT focusable and is skipped by the D-pad.
+  -->
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:padding="@dimen/container_margin"
+    >
+
+    <!-- Current privilege mode + running status -->
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center_vertical"
+        android:orientation="horizontal"
+        >
+
+        <Button
+            android:id="@+id/btnMode"
+            style="?attr/materialButtonOutlinedStyle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:minWidth="0dp"
+            android:nextFocusDown="@id/btnQuickFrp"
+            android:tooltipText="@string/term_mode_switch_hint"
+            tools:text="权限模式：应用权限（普通）"
+            />
+
+        <TextView
+            android:id="@+id/txtStatus"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/field_margin_start"
+            android:text="@string/term_status_idle"
+            android:textAppearance="?attr/textAppearanceLabelMedium"
+            />
+    </LinearLayout>
+
+    <!-- Quick actions: start/stop the remote helper tools in one tap -->
+
+    <TextView
+        android:id="@+id/txtQuickActions"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/field_margin_top"
+        android:text="@string/term_quick_actions"
+        android:textAppearance="?attr/textAppearanceLabelMedium"
+        android:textColor="?attr/colorOnSurfaceVariant"
+        />
+
+    <LinearLayout
+        android:id="@+id/quickActionsRow"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/field_margin_start"
+        android:orientation="horizontal"
+        >
+
+        <Button
+            android:id="@+id/btnQuickFrp"
+            style="?attr/materialButtonOutlinedStyle"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:maxLines="2"
+            android:minWidth="0dp"
+            android:nextFocusDown="@id/editCommand"
+            android:textSize="12sp"
+            tools:text="启动 frpc 内网穿透"
+            />
+
+        <Button
+            android:id="@+id/btnQuickTailscale"
+            style="?attr/materialButtonOutlinedStyle"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/field_margin_start"
+            android:layout_weight="1"
+            android:maxLines="2"
+            android:minWidth="0dp"
+            android:nextFocusDown="@id/editCommand"
+            android:textSize="12sp"
+            tools:text="启动 Tailscale 组网"
+            />
+
+        <Button
+            android:id="@+id/btnQuickNezha"
+            style="?attr/materialButtonOutlinedStyle"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/field_margin_start"
+            android:layout_weight="1"
+            android:maxLines="2"
+            android:minWidth="0dp"
+            android:nextFocusDown="@id/editCommand"
+            android:textSize="12sp"
+            tools:text="启动 哪吒监控上报"
+            />
+    </LinearLayout>
+
+    <!-- Console (scrolls independently from the rest of the page) -->
+
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_marginTop="@dimen/field_margin_top"
+        android:layout_weight="1"
+        >
+
+        <ScrollView
+            android:id="@+id/consoleScroller"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="?attr/colorSurfaceVariant"
+            android:fadeScrollbars="false"
+            android:fillViewport="true"
+            android:focusable="false"
+            android:scrollbarStyle="insideInset"
+            android:scrollbars="vertical"
+            >
+
+            <TextView
+                android:id="@+id/console"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:focusable="false"
+                android:fontFamily="monospace"
+                android:lineSpacingExtra="2dp"
+                android:padding="@dimen/log_field_margin"
+                android:textIsSelectable="true"
+                android:textSize="12sp"
+                android:typeface="monospace"
+                tools:text="@tools:sample/lorem/random"
+                />
+        </ScrollView>
+
+        <TextView
+            android:id="@+id/consoleEmpty"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:padding="@dimen/log_field_margin"
+            android:text="@string/term_console_empty"
+            android:textAppearance="?attr/textAppearanceBodyMedium"
+            android:textColor="?attr/colorOnSurfaceVariant"
+            />
+    </FrameLayout>
+
+    <!-- Command input -->
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/field_margin_top"
+        android:gravity="center_vertical"
+        android:orientation="horizontal"
+        >
+
+        <EditText
+            android:id="@+id/editCommand"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:fontFamily="monospace"
+            android:hint="@string/term_hint"
+            android:imeOptions="actionSend"
+            android:importantForAutofill="no"
+            android:inputType="text"
+            android:maxLines="1"
+            android:nextFocusDown="@id/btnStop"
+            android:nextFocusForward="@id/btnRun"
+            android:singleLine="true"
+            />
+
+        <Button
+            android:id="@+id/btnRun"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/field_margin_start"
+            android:minWidth="0dp"
+            android:nextFocusDown="@id/btnStop"
+            android:nextFocusUp="@id/editCommand"
+            android:text="@string/term_run"
+            app:icon="@drawable/ic_term_play_24px"
+            app:iconGravity="textStart"
+            app:iconPadding="4dp"
+            app:iconSize="16dp"
+            />
+    </LinearLayout>
+
+    <!-- Stop / clear / history -->
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/field_margin_top"
+        android:orientation="horizontal"
+        >
+
+        <Button
+            android:id="@+id/btnStop"
+            style="?attr/materialButtonOutlinedStyle"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:minWidth="0dp"
+            android:nextFocusUp="@id/btnRun"
+            android:text="@string/term_stop"
+            app:icon="@drawable/ic_term_stop_24px"
+            app:iconGravity="textStart"
+            app:iconPadding="4dp"
+            app:iconSize="16dp"
+            />
+
+        <Button
+            android:id="@+id/btnClear"
+            style="?attr/materialButtonOutlinedStyle"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/field_margin_start"
+            android:layout_weight="1"
+            android:minWidth="0dp"
+            android:nextFocusUp="@id/btnRun"
+            android:text="@string/term_clear"
+            app:icon="@drawable/ic_term_clear_24px"
+            app:iconGravity="textStart"
+            app:iconPadding="4dp"
+            app:iconSize="16dp"
+            />
+
+        <Button
+            android:id="@+id/btnHistoryUp"
+            style="?attr/materialButtonOutlinedStyle"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/field_margin_start"
+            android:layout_weight="1"
+            android:minWidth="0dp"
+            android:nextFocusUp="@id/btnRun"
+            android:text="@string/term_history_up"
+            />
+
+        <Button
+            android:id="@+id/btnHistoryDown"
+            style="?attr/materialButtonOutlinedStyle"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/field_margin_start"
+            android:layout_weight="1"
+            android:minWidth="0dp"
+            android:nextFocusUp="@id/btnRun"
+            android:text="@string/term_history_down"
+            />
+    </LinearLayout>
+
+    <!-- Examples + background note -->
+
+    <TextView
+        android:id="@+id/txtHelp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/field_margin_top"
+        android:text="@string/term_help"
+        android:textAppearance="?attr/textAppearanceLabelMedium"
+        android:textColor="?attr/colorOnSurfaceVariant"
+        />
+
+    <TextView
+        android:id="@+id/txtBgNote"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/field_margin_top"
+        android:text="@string/term_bg_note"
+        android:textAppearance="?attr/textAppearanceBodySmall"
+        android:textColor="?attr/colorOnSurfaceVariant"
+        />
+</LinearLayout>

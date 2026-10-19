@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--suppress LongLine --><resources>
+    <!-- Strings for the ADB (wireless debugging) mode. -->
+    <string name="adb_title">ADB wireless debugging</string>
+    <string name="adb_pair_title">Pair wireless debugging</string>
+    <string name="adb_pair_host">Host</string>
+    <string name="adb_pair_port">Pairing port</string>
+    <string name="adb_pair_code">Pairing code</string>
+    <string name="adb_pair_hint">Enable “Wireless debugging” in developer options, tap “Pair device with pairing code”, then enter the pairing port and code shown on screen below.</string>
+    <string name="adb_pair_start">Start pairing</string>
+    <string name="adb_pairing">Pairing…</string>
+    <string name="adb_pair_success">Pairing successful</string>
+    <string name="adb_pair_failed_fmt">Pairing failed: %1$s</string>
+    <string name="adb_connect">Connect</string>
+    <string name="adb_disconnect">Disconnect</string>
+    <string name="adb_connecting">Connecting…</string>
+    <string name="adb_disconnecting">Disconnecting…</string>
+    <string name="adb_connected">Connected</string>
+    <string name="adb_disconnected">Not connected</string>
+    <string name="adb_status_fmt">Status: %1$s</string>
+    <string name="adb_port">Connect port</string>
+    <string name="adb_pair_first">Connection failed. Pair the device first.</string>
+    <string name="adb_need_pairing">Pairing required</string>
+    <string name="adb_auth_failed">Authentication failed, pair again</string>
+    <string name="adb_connect_failed_fmt">Connection failed: %1$s</string>
+    <string name="adb_exec_failed_fmt">Command failed: %1$s</string>
+    <string name="adb_not_connected">Not connected to ADB; pair in Settings first</string>
+    <string name="adb_invalid_input">Enter a valid host, port and pairing code</string>
+    <string name="adb_unknown_error">Unknown error</string>
+    <string name="adb_close">Close</string>
+</resources>

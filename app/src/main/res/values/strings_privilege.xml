@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--suppress LongLine -->
+<resources>
+    <!-- Privilege mode: run as the app itself. -->
+    <string name="pe_mode_app">应用权限（普通）</string>
+    <!-- Privilege mode: run as root through "su". -->
+    <string name="pe_mode_root">Root 权限（su）</string>
+    <!-- Privilege mode: run through an ADB (wireless debugging) connection. -->
+    <string name="pe_mode_adb">ADB 权限（无线调试）</string>
+</resources>

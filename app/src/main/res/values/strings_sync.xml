@@ -1,0 +1,113 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--suppress LongLine -->
+<resources>
+    <!-- Menu option / screen title: file synchronization. -->
+    <string name="ui_sync">文件同步</string>
+    <!-- Screen title. -->
+    <string name="sync_screen_title">文件同步</string>
+    <!-- Information text on the sync screen. -->
+    <string name="sync_hint">通过 rclone 在远端（SFTP / WebDAV）与本地目录之间执行单向复制。任务在前台服务中运行，关闭应用后仍会保持运行；不删除目标多余文件，不做双向同步。</string>
+
+    <!-- Name of the background service. -->
+    <string name="sync_service_name">春夏秋手机安全助手 文件同步</string>
+    <!-- Service description needed for Android OS. -->
+    <string name="sync_service_description">在后台运行 rclone 文件同步任务。</string>
+    <!-- Notification text while a task is starting. -->
+    <string name="sync_notification_running">正在同步…</string>
+    <!-- Notification text while a task is running.
+         Param 1: task name(s). -->
+    <string name="sync_notification_running_fmt">正在同步：%1$s</string>
+
+    <!-- Section header for the rclone binary card. -->
+    <string name="sync_binary_section">rclone 可执行文件</string>
+    <!-- rclone binary is available. -->
+    <string name="sync_binary_ok">rclone：已就绪</string>
+    <!-- rclone binary is missing. -->
+    <string name="sync_binary_missing">rclone：未安装，请导入或下载</string>
+    <!-- Error: rclone binary not found. -->
+    <string name="sync_no_binary">缺少 rclone 可执行文件，请在「文件同步」或「设置」中导入或下载</string>
+    <!-- Error: task not fully configured. -->
+    <string name="sync_not_configured">请填写任务名称、远端主机、远端路径和本地路径</string>
+
+    <!-- Button: create a new task. -->
+    <string name="sync_new_task">新建任务</string>
+    <!-- Button: edit a task. -->
+    <string name="sync_btn_edit">编辑</string>
+    <!-- Button: delete a task. -->
+    <string name="sync_btn_delete">删除</string>
+    <!-- Confirm deletion.
+         Param 1: task name. -->
+    <string name="sync_confirm_delete">删除任务「%1$s」？</string>
+
+    <!-- Task state: idle. -->
+    <string name="sync_state_idle">空闲</string>
+    <!-- Task state: running. -->
+    <string name="sync_state_running">运行中</string>
+    <!-- Task state: succeeded. -->
+    <string name="sync_state_succeeded">已完成</string>
+    <!-- Task state: failed. -->
+    <string name="sync_state_failed">失败</string>
+    <!-- Task state: cancelled. -->
+    <string name="sync_state_cancelled">已取消</string>
+
+    <!-- Direction label: download (remote → local). -->
+    <string name="sync_dir_download">下载 ←</string>
+    <!-- Direction label: upload (local → remote). -->
+    <string name="sync_dir_upload">上传 →</string>
+    <!-- Task summary.
+         Param 1: direction arrow, Param 2: remote url, Param 3: local path. -->
+    <string name="sync_summary_fmt">%1$s %2$s → %3$s</string>
+    <!-- Progress text.
+         Param 1: percent, Param 2: transferred, Param 3: total. -->
+    <string name="sync_progress_fmt">%1$d%%  ·  %2$s / %3$s</string>
+    <!-- Progress text while running without a known total. -->
+    <string name="sync_progress_running">正在传输…</string>
+
+    <!-- Dialog field: task name. -->
+    <string name="sync_field_name">任务名称</string>
+    <!-- Dialog field: remote backend type. -->
+    <string name="sync_field_remote_type">远端类型</string>
+    <!-- Dialog field: remote host. -->
+    <string name="sync_field_host">主机地址</string>
+    <!-- Dialog field: remote port. -->
+    <string name="sync_field_port">端口（留空使用默认）</string>
+    <!-- Dialog field: remote user. -->
+    <string name="sync_field_user">用户名</string>
+    <!-- Dialog field: remote password. -->
+    <string name="sync_field_password">密码</string>
+    <!-- Dialog field: remote path. -->
+    <string name="sync_field_remote_path">远端路径</string>
+    <!-- Dialog field: local path (POSIX path, e.g. /sdcard/Photos). -->
+    <string name="sync_field_local_path">本地路径（如 /sdcard/Photos）</string>
+    <!-- Dialog field: copy direction. -->
+    <string name="sync_field_direction">方向</string>
+    <!-- Dialog field: use TLS (WebDAV). -->
+    <string name="sync_field_tls">使用 HTTPS（WebDAV）</string>
+
+    <!-- Dialog section: scheduling. -->
+    <string name="sync_field_schedule_section">自动调度</string>
+    <!-- Dialog field: enable scheduling. -->
+    <string name="sync_field_schedule_enabled">启用自动调度</string>
+    <!-- Dialog field: schedule interval in minutes. -->
+    <string name="sync_field_schedule_interval">间隔（分钟）</string>
+    <!-- Dialog field: require Wi-Fi. -->
+    <string name="sync_field_schedule_require_wifi">仅在 Wi-Fi 下运行</string>
+    <!-- Dialog field: require charging. -->
+    <string name="sync_field_schedule_require_charging">仅在充电时运行</string>
+    <!-- Schedule summary: interval.
+         Param 1: interval in minutes. -->
+    <string name="sync_schedule_interval_fmt">每 %1$d 分钟</string>
+    <!-- Schedule summary: Wi-Fi only. -->
+    <string name="sync_schedule_wifi">仅 Wi-Fi</string>
+    <!-- Schedule summary: charging only. -->
+    <string name="sync_schedule_charging">仅充电</string>
+
+    <!-- Notification channel name for sync results. -->
+    <string name="sync_notification_channel_result">同步结果</string>
+    <!-- Notification title: sync succeeded.
+         Param 1: task name. -->
+    <string name="sync_notification_succeeded_fmt">同步完成：%1$s</string>
+    <!-- Notification title: sync failed.
+         Param 1: task name. -->
+    <string name="sync_notification_failed_fmt">同步失败：%1$s</string>
+</resources>

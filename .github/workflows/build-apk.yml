@@ -1,0 +1,316 @@
+# =============================================================================
+# Build APK - Phone Security Assistant (MIT license, com.tencentx.pinyin)
+# =============================================================================
+#
+# WHAT THIS WORKFLOW DOES
+#   1. builds the native C code (dropbear / rsync / openssh + JNI via CMake/NDK),
+#   2. downloads the prebuilt Go helper binaries (frpc, tailscale, tailscaled,
+#      nezha-agent) with tools/fetch-go-binaries.sh - they are NOT committed to
+#      git - and caches them between runs,
+#   3. runs "./gradlew --no-daemon assembleDebug assembleRelease",
+#   4. uploads the APKs as GitHub Actions artifacts; for tags it also creates a
+#      GitHub Release (named after the tag) with both APKs attached.
+#
+# TRIGGERS
+#   push to "main"/"master" .... build + upload artifacts
+#   push of a tag "v*" ......... build + upload artifacts + GitHub Release
+#   pull_request ............... build + upload artifacts (unsigned - secrets are
+#                                not available to PRs from forks)
+#   workflow_dispatch .......... manual build; optional "abis" input selecting the
+#                                Go helper binary ABIs (defaults to all app ABIs)
+#
+# ARTIFACTS
+#   PhoneSecurityAssistant-debug-apk     app/build/outputs/apk/debug/*.apk
+#   PhoneSecurityAssistant-release-apk   app/build/outputs/apk/release/*.apk
+#                        (UNSIGNED unless the signing secrets below are set)
+#   build-diagnostics    Gradle logs/reports - only uploaded when the build fails
+#
+# SIGNING (optional - repository secrets; details in the BUILDING-SIGNING file)
+#   KEYSTORE_BASE64      base64 of the keystore, e.g.    base64 -w0 myKeystore.jks
+#   KEYSTORE_PASSWORD    keystore password
+#   KEY_ALIAS            key alias
+#   KEY_PASSWORD         key password
+#   When KEYSTORE_BASE64 is present the keystore is decoded to
+#   $RUNNER_TEMP/keystore.jks and a properties file is written containing
+#       sign.storeFile / sign.storePassword / sign.keyAlias / sign.keyPassword
+#   which is then passed to Gradle as -PSshd4a.properties=<absolute path>
+#   (app/build.gradle signs the release variant when that property/file is
+#   present). Without the secret the release APK is built UNSIGNED and a warning
+#   is emitted. Fork PRs never receive secrets, so their builds are unsigned too.
+#
+# TOOLCHAIN (keep in sync with gradle/libs.versions.toml)
+#   JDK 25 (Temurin) - Gradle 9.7.1 via wrapper (distributionSha256Sum verified)
+#   AGP 9.3.2 - compileSdk/targetSdk 36 - minSdk 26
+#   NDK 30.0.14904198 - CMake 4.1.2 - build-tools 36.0.0
+#   ...installed with those EXACT versions via sdkmanager.
+#
+# CACHING (one mechanism per resource, deliberately)
+#   * gradle/actions/setup-gradle@v4 caches the Gradle User Home (dependencies,
+#     wrapper distribution, compiled build scripts) and the local build cache.
+#     actions/setup-java is used WITHOUT "cache: gradle" so that dependencies are
+#     not cached twice. (Cache cleanup needs "actions: write"; this workflow only
+#     grants "contents: read", so cleanup is skipped - harmless.)
+#   * actions/cache@v4 caches app/src/main/jniLibs (the ~75 MB of Go helper
+#     binaries), keyed by ABI list + hash of tools/fetch-go-binaries.sh.
+#
+# NOTES
+#   * app/src/main/cpp/rsync/{proto.h,help-*.h,daemon-parm.h,rounding.h,
+#     default-*.h} and dropbear's default_options_guard.h are GENERATED files that
+#     are NOT committed, so the prebuild scripts are run before Gradle (exactly as
+#     build.sh does).
+#   * The Go helper binaries are packaged into BOTH variants; the C code is built
+#     for the ABIs configured in app/build.gradle (debug: x86/x86_64,
+#     release: armeabi-v7a/arm64-v8a/x86_64).
+#   * The Gradle wrapper jar checksum validation of setup-gradle is disabled
+#     (validate-wrappers: false): the Gradle distribution itself is already
+#     verified through distributionSha256Sum in gradle-wrapper.properties, and an
+#     as-yet-unknown wrapper checksum would fail the run.
+# =============================================================================
+
+name: Build APK
+
+on:
+  push:
+    branches: [main, master]
+    tags: ['v*']
+  pull_request:
+  workflow_dispatch:
+    inputs:
+      abis:
+        description: 'Go helper binary ABIs (space or comma separated; narrowing this omits remote tools from other APK ABIs)'
+        required: false
+        default: 'armeabi-v7a arm64-v8a x86_64 x86'
+        type: string
+
+# Cancel superseded runs on branches/PRs; never cancel a tagged release build.
+concurrency:
+  group: build-apk-${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: ${{ !startsWith(github.ref, 'refs/tags/') }}
+
+# Least privilege by default; the release job raises "contents" to "write".
+permissions:
+  contents: read
+
+defaults:
+  run:
+    shell: bash
+
+env:
+  # Toolchain versions - keep in sync with gradle/libs.versions.toml
+  JAVA_VERSION: '25'
+  COMPILE_SDK: '36'
+  BUILD_TOOLS_VERSION: '36.0.0'
+  NDK_VERSION: '30.0.14904198'
+  CMAKE_VERSION: '4.1.2'
+  # Bump to invalidate the cached Go helper binaries (key component).
+  GO_BINARIES_CACHE_VERSION: 'v1'
+  # CI JVM sizing: honored for the build JVM (Gradle forks a single-use
+  # daemon to apply org.gradle.jvmargs when they differ from the client).
+  GRADLE_OPTS: '-Dorg.gradle.jvmargs=-Xmx4g -XX:MaxMetaspaceSize=1g -Dfile.encoding=UTF-8'
+
+jobs:
+  build:
+    name: Build debug + release APKs
+    runs-on: ubuntu-latest
+    timeout-minutes: 60
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Set up JDK ${{ env.JAVA_VERSION }} (Temurin)
+        uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: ${{ env.JAVA_VERSION }}
+          # No "cache: gradle" - gradle/actions/setup-gradle below does the caching.
+
+      - name: Set up Gradle (caches Gradle User Home + local build cache)
+        uses: gradle/actions/setup-gradle@v4
+        with:
+          # See the note in the header: the distribution sum is verified by the
+          # wrapper itself; an unknown wrapper-jar checksum must not fail the run.
+          validate-wrappers: false
+
+      - name: Set up Android SDK
+        uses: android-actions/setup-android@v3
+
+      - name: Install Android SDK packages (exact versions from libs.versions.toml)
+        run: |
+          yes | sdkmanager --licenses > /dev/null || true
+          sdkmanager --install \
+            "platform-tools" \
+            "platforms;android-${COMPILE_SDK}" \
+            "build-tools;${BUILD_TOOLS_VERSION}" \
+            "ndk;${NDK_VERSION}" \
+            "cmake;${CMAKE_VERSION}"
+          # The SDK CMake bin dir provides cmake + ninja (same as build.sh).
+          echo "${ANDROID_SDK_ROOT}/cmake/${CMAKE_VERSION}/bin" >> "$GITHUB_PATH"
+          echo "Java: $(java -version 2>&1 | head -n 1)"
+          echo "cmake: $(cmake --version | head -n 1)"
+          echo "ndk path: ${ANDROID_SDK_ROOT}/ndk/${NDK_VERSION}"
+          test -d "${ANDROID_SDK_ROOT}/ndk/${NDK_VERSION}"
+
+      - name: Install build prerequisites (gawk for the native prebuild scripts)
+        run: |
+          # BUILDING: "gawk/awk for rsync building"
+          sudo apt-get update -qq
+          sudo apt-get install -y -qq gawk
+
+      - name: Resolve ABI list for the Go helper binaries
+        id: abis
+        env:
+          INPUT_ABIS: ${{ inputs.abis }}
+        run: |
+          # Default (push/tag builds): fetch binaries for every ABI the app can
+          # be built for, so feature parity is kept in all APK variants.
+          abis="$(echo "${INPUT_ABIS:-armeabi-v7a arm64-v8a x86_64 x86}" | tr ',' ' ' | xargs)"
+          key="$(echo "$abis" | tr ',' ' ' | xargs | tr ' ' '_')"
+          echo "Requested ABI(s): $abis"
+          echo "list=$abis" >> "$GITHUB_OUTPUT"
+          echo "key=$key" >> "$GITHUB_OUTPUT"
+
+      - name: Restore cached Go helper binaries (app/src/main/jniLibs)
+        id: cache-go-binaries
+        uses: actions/cache@v4
+        with:
+          path: app/src/main/jniLibs
+          key: go-binaries-${{ runner.os }}-${{ steps.abis.outputs.key }}-${{ env.GO_BINARIES_CACHE_VERSION }}-${{ hashFiles('tools/fetch-go-binaries.sh') }}
+
+      - name: Fetch Go helper binaries (frpc, tailscale[d], nezha-agent)
+        env:
+          ABIS: ${{ steps.abis.outputs.list }}
+        run: |
+          # These binaries are required by the app and are NOT committed; the
+          # script fails the job if a download fails. On a cache hit the files
+          # are already in place and the script is a fast no-op (--force would
+          # re-download).
+          bash tools/fetch-go-binaries.sh $ABIS
+          count="$(find app/src/main/jniLibs -type f -name '*.so' 2>/dev/null | wc -l)"
+          echo "Found ${count} helper .so file(s):"
+          find app/src/main/jniLibs -type f -name '*.so' 2>/dev/null | sort
+          if [ "${count}" -eq 0 ]; then
+            echo "::error::No Go helper binaries in app/src/main/jniLibs - the APK would be missing features."
+            exit 1
+          fi
+
+      - name: Generate native prebuild headers (required, not committed)
+        run: |
+          # Same as build.sh: generates app/src/main/cpp/rsync/{proto.h,
+          # help-*.h,daemon-parm.h,rounding.h,default-*.h} and dropbear's
+          # default_options_guard.h - without them the CMake build fails.
+          bash app/src/main/cpp/prebuild-rsyn.sh
+          bash app/src/main/cpp/prebuild-dropbear.sh
+
+      - name: Configure signing (optional)
+        id: signing
+        env:
+          # Empty for fork PRs / when not configured - never fails the build.
+          KEYSTORE_BASE64: ${{ secrets.KEYSTORE_BASE64 }}
+          KEYSTORE_PASSWORD: ${{ secrets.KEYSTORE_PASSWORD }}
+          KEY_ALIAS: ${{ secrets.KEY_ALIAS }}
+          KEY_PASSWORD: ${{ secrets.KEY_PASSWORD }}
+        run: |
+          if [ -z "${KEYSTORE_BASE64}" ]; then
+            echo "::warning::KEYSTORE_BASE64 is not set - the release APK will be UNSIGNED."
+            echo "properties=" >> "$GITHUB_OUTPUT"
+            exit 0
+          fi
+          for var in KEYSTORE_PASSWORD KEY_ALIAS KEY_PASSWORD; do
+            if [ -z "${!var}" ]; then
+              echo "::error::${var} is not set although KEYSTORE_BASE64 is - configure all signing secrets or none."
+              exit 1
+            fi
+          done
+          umask 077
+          keystore="${RUNNER_TEMP}/keystore.jks"
+          printf '%s' "${KEYSTORE_BASE64}" | base64 --decode > "${keystore}"
+          props="${RUNNER_TEMP}/Sshd4a.properties"
+          {
+            echo "sign.storeFile=${keystore}"
+            echo "sign.storePassword=${KEYSTORE_PASSWORD}"
+            echo "sign.keyAlias=${KEY_ALIAS}"
+            echo "sign.keyPassword=${KEY_PASSWORD}"
+          } > "${props}"
+          echo "Signing enabled; properties file: ${props}"
+          echo "properties=${props}" >> "$GITHUB_OUTPUT"
+
+      - name: Assemble debug + release APKs
+        env:
+          SIGNING_PROPERTIES: ${{ steps.signing.outputs.properties }}
+        run: |
+          # --no-daemon keeps CI clean; caching is handled by setup-gradle.
+          args=(--no-daemon --stacktrace assembleDebug assembleRelease)
+          if [ -n "${SIGNING_PROPERTIES}" ] && [ -f "${SIGNING_PROPERTIES}" ]; then
+            echo "Building with signing configuration: ${SIGNING_PROPERTIES}"
+            args+=("-PSshd4a.properties=${SIGNING_PROPERTIES}")
+          else
+            echo "::warning::No signing configuration - building the release APK UNSIGNED."
+          fi
+          ./gradlew "${args[@]}"
+
+      - name: Show APK outputs
+        run: find app/build/outputs/apk -type f -name '*.apk' -exec ls -l {} + -exec sha256sum {} +
+
+      - name: Upload debug APK
+        uses: actions/upload-artifact@v4
+        with:
+          name: PhoneSecurityAssistant-debug-apk
+          path: app/build/outputs/apk/debug/*.apk
+          if-no-files-found: error
+          retention-days: 30
+
+      - name: Upload release APK
+        uses: actions/upload-artifact@v4
+        with:
+          name: PhoneSecurityAssistant-release-apk
+          path: app/build/outputs/apk/release/*.apk
+          if-no-files-found: error
+          retention-days: 30
+
+      - name: Upload build diagnostics (on failure)
+        # "if-no-files-found: ignore" instead of a hashFiles() guard: build
+        # directories may be .gitignore'd, which hashFiles() honors.
+        if: failure()
+        uses: actions/upload-artifact@v4
+        with:
+          name: build-diagnostics
+          path: |
+            app/build/outputs/logs/
+            **/build/reports/
+          if-no-files-found: ignore
+          retention-days: 7
+
+  release:
+    name: Publish GitHub Release
+    needs: build
+    if: startsWith(github.ref, 'refs/tags/v')
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    permissions:
+      contents: write
+
+    steps:
+      - name: Download debug APK
+        uses: actions/download-artifact@v4
+        with:
+          name: PhoneSecurityAssistant-debug-apk
+          path: dist
+
+      - name: Download release APK
+        uses: actions/download-artifact@v4
+        with:
+          name: PhoneSecurityAssistant-release-apk
+          path: dist
+
+      - name: List release assets
+        run: ls -l dist
+
+      - name: Create GitHub Release (tag name = release name)
+        uses: softprops/action-gh-release@v2
+        with:
+          tag_name: ${{ github.ref_name }}
+          name: ${{ github.ref_name }}
+          files: dist/*.apk
+          fail_on_unmatched_files: true
+          generate_release_notes: true

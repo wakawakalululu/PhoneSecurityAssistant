@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--suppress LongLine -->
+<resources>
+    <!-- Shown as the frpc summary when no server address was configured. -->
+    <string name="frp_not_configured">Not configured yet</string>
+    <!-- Error shown when the frpc binary could not be found. Do NOT translate "frpc". -->
+    <string name="frp_no_binary">frpc binary missing, import or download it on the “Remote &amp; monitoring” screen</string>
+    <!-- frpc summary; shown when a server address is configured.
+         Param 1: server address and port, Param 2: proxy name, Param 3: remote port. -->
+    <string name="frp_summary_fmt">Server: %1$s\nProxy: %2$s → remote port %3$d</string>
+    <!-- Part of the frpc summary. Param 1: server address and port. -->
+    <string name="frp_server_fmt">Server: %1$s</string>
+    <!-- Part of the frpc summary. Param 1: proxy name, Param 2: remote port. -->
+    <string name="frp_proxy_fmt">Proxy: %1$s → remote port %2$d</string>
+    <!-- Param 1: remote port. -->
+    <string name="frp_remote_port_fmt">Remote port: %1$d</string>
+
+    <!-- Shown as the Tailscale summary when no binary is available.
+         Do NOT translate "Tailscale". -->
+    <string name="ts_not_configured">Not configured yet</string>
+    <!-- Error shown when a Tailscale binary could not be found. -->
+    <string name="ts_no_binary">Tailscale binary missing, import or download it on the “Remote &amp; monitoring” screen</string>
+    <!-- Error shown when TUN mode is configured but no "su" binary could be found. -->
+    <string name="ts_no_su">TUN mode requires root, but no su binary was found</string>
+    <!-- Warning shown when TUN mode is selected (also used by the settings screen). -->
+    <string name="ts_tun_needs_root">TUN mode requires root; make sure the device is rooted</string>
+    <!-- Prefix added to the CLI output when the daemon is not running. -->
+    <string name="ts_daemon_not_running">Hint: tailscaled does not seem to be running</string>
+    <!-- Tailscale summary.
+         Param 1: mode, Param 2: hostname, Param 3: auth key state, Param 4: socket path. -->
+    <string name="ts_summary_fmt">Mode: %1$s\nHostname: %2$s\nAuth key: %3$s\nSocket: %4$s</string>
+    <!-- Tailscale mode: TUN (VPN) interface; requires root. -->
+    <string name="ts_mode_tun">TUN mode (requires root)</string>
+    <!-- Tailscale mode: userspace networking; no root required. -->
+    <string name="ts_mode_userspace">Userspace networking mode</string>
+    <!-- Tailscale summary: no hostname configured. -->
+    <string name="ts_hostname_none">Not set</string>
+    <!-- Tailscale summary: an auth key is configured. -->
+    <string name="ts_authkey_set">Set</string>
+    <!-- Tailscale summary: no auth key configured. -->
+    <string name="ts_authkey_unset">Not set</string>
+</resources>

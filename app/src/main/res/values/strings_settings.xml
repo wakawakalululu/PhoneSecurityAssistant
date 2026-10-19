@@ -1,0 +1,112 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--suppress LongLine -->
+<resources>
+
+    <!-- Preference category title: privilege escalation (root / adb). -->
+    <string name="st_pc_privilege">权限与提权</string>
+    <!-- Preference summary/info message: umbrella note for the section.
+         Also shown in the "shell mode" choice dialogs. -->
+    <string name="st_ps_shell_mode">Root 模式将以 root 身份运行 SSH 会话和终端；ADB 模式通过无线调试运行，无需 Root 权限。</string>
+    <!-- Preference option -->
+    <string name="st_pt_shell_mode">提权模式（SSH 登录）</string>
+    <!-- Preference option -->
+    <string name="st_pt_su_path">su 路径</string>
+    <!-- Preference summary shown when "st_pt_su_path" is not set. -->
+    <string name="st_ps_su_path">留空则自动检测</string>
+    <!-- Dialog message for "st_pt_su_path". -->
+    <string name="st_pm_su_path">输入 su 可执行文件的完整路径；留空则自动检测。</string>
+    <!-- Menu option: check for root ("su") availability. -->
+    <string name="st_detect_root">检测 Root 权限</string>
+    <!-- info message after a successful root check.
+         Param 1: path of the detected su binary. -->
+    <string name="st_root_detected_fmt">检测到 su：%1$s</string>
+    <!-- info message after a failed root check. -->
+    <string name="st_root_not_found">未检测到可用的 Root 权限</string>
+    <!-- Preference option -->
+    <string name="st_pt_terminal_mode">终端权限模式</string>
+
+    <!-- Preference category title: ADB (wireless debugging). -->
+    <string name="st_pc_adb">ADB 无线调试</string>
+    <!-- Preference option -->
+    <string name="st_pt_adb_host">主机地址</string>
+    <!-- Preference option -->
+    <string name="st_pt_adb_port">端口</string>
+    <!-- Menu option: pair with the device using a wireless debugging pairing code. -->
+    <string name="st_adb_pair">使用配对码配对</string>
+    <!-- Menu option: connect and show the current ADB connection status. -->
+    <string name="st_adb_status">连接/状态</string>
+
+    <!-- Preference category title: frpc reverse proxy. -->
+    <string name="st_pc_frp">内网穿透 frpc</string>
+    <!-- Preference option -->
+    <string name="st_pt_frp_auto_start">随远程服务自动启动</string>
+    <!-- Preference option -->
+    <string name="st_pt_frp_server_addr">服务器地址</string>
+    <!-- Preference option -->
+    <string name="st_pt_frp_server_port">服务器端口</string>
+    <!-- Preference option -->
+    <string name="st_pt_frp_token">令牌</string>
+    <!-- Preference option -->
+    <string name="st_pt_frp_proxy_name">代理名称</string>
+    <!-- Preference option -->
+    <string name="st_pt_frp_remote_port">远程端口</string>
+    <!-- Preference option -->
+    <string name="st_pt_frp_binary">frpc 可执行文件路径</string>
+    <!-- Menu option: download the official frpc binary. -->
+    <string name="st_download_frpc">在线下载 frpc</string>
+
+    <!-- Preference category title: Tailscale networking. -->
+    <string name="st_pc_tailscale">Tailscale 组网</string>
+    <!-- Preference option -->
+    <string name="st_pt_ts_auto_start">自动启动 tailscaled</string>
+    <!-- Preference option -->
+    <string name="st_pt_ts_auth_key">授权密钥</string>
+    <!-- Preference option -->
+    <string name="st_pt_ts_hostname">设备名称（hostname）</string>
+    <!-- Preference option -->
+    <string name="st_pt_ts_tun_mode">TUN 模式（需要 Root）</string>
+    <!-- Preference option -->
+    <string name="st_pt_ts_binary">tailscaled 可执行文件路径</string>
+    <!-- Menu option: download the official Tailscale binaries. -->
+    <string name="st_download_tailscale">在线下载 Tailscale</string>
+
+    <!-- Preference category title: Nezha monitoring agent. -->
+    <string name="st_pc_nezha">哪吒监控上报</string>
+    <!-- Preference option -->
+    <string name="st_pt_nezha_auto_start">后台自动上报</string>
+    <!-- Preference option -->
+    <string name="st_pt_nezha_server">面板地址（host:port）</string>
+    <!-- Preference option -->
+    <string name="st_pt_nezha_secret">密钥（secret）</string>
+    <!-- Preference option -->
+    <string name="st_pt_nezha_tls">使用 TLS</string>
+    <!-- Preference option -->
+    <string name="st_pt_nezha_disable_command_execute">禁止面板远程执行命令</string>
+    <!-- Preference option -->
+    <string name="st_pt_nezha_binary">nezha-agent 可执行文件路径</string>
+    <!-- Menu option: download the official nezha-agent binary. -->
+    <string name="st_download_nezha">在线下载 nezha-agent</string>
+
+     <string name="st_pc_webdav">WebDAV（只读文件访问）</string>
+     <string name="st_pt_webdav_url">HTTPS 服务器地址</string>
+     <string name="st_ps_webdav_url">配置后，远端根目录会显示在系统文件选择器的「春夏秋手机安全助手」位置。当前仅支持只读浏览和打开，不创建本地挂载路径。</string>
+     <string name="st_pt_webdav_username">用户名</string>
+     <string name="st_pt_webdav_password">密码</string>
+     <string name="st_webdav_browse">浏览 WebDAV 文件</string>
+     <string name="st_webdav_picker_unavailable">系统文件选择器不可用</string>
+     <string name="st_webdav_invalid_config">请填写有效的 HTTPS WebDAV 地址</string>
+     <string name="webdav_provider_label">春夏秋手机安全助手 WebDAV</string>
+
+    <!-- Preference category title: file synchronization. -->
+    <string name="st_pc_sync">文件同步 rclone</string>
+    <!-- Preference option -->
+    <string name="st_pt_sync_binary">rclone 可执行文件路径</string>
+    <!-- Menu option: download the official rclone binary. -->
+    <string name="st_download_rclone">在线下载 rclone</string>
+
+    <!-- Preference category title: remote access and monitoring services. -->
+    <string name="st_pc_remote">远程与监控服务</string>
+    <!-- Preference option -->
+    <string name="st_pt_remote_start_with_sshd">随 sshd 服务一起启动</string>
+
+</resources>

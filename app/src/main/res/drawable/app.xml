@@ -1,0 +1,27 @@
+<!-- Reminder: launcher icons must be 108dp with the actual icon 66dp
+
+    https://developer.android.com/develop/ui/views/launch/icon_design_adaptive#design-adaptive-icons
+-->
+<!--suppress LongLine -->
+<vector xmlns:android="http://schemas.android.com/apk/res/android"
+        android:width="108dp"
+        android:height="108dp"
+        android:viewportWidth="480"
+        android:viewportHeight="480">
+
+    <!-- Shield -->
+    <path
+        android:fillColor="#ffffff"
+        android:pathData="M150,110 L330,110 L330,240 Q330,290 300,300 L240,390 L180,300 Q150,290 150,240 Z" />
+
+    <!-- Lock shackle (ring shape) -->
+    <path
+        android:fillColor="#ffffff"
+        android:pathData="M195,230 L195,190 Q195,160 240,160 Q285,160 285,190 L285,230 L271,230 L271,190 Q271,174 240,174 Q209,174 209,190 L209,230 Z" />
+
+    <!-- Lock body with keyhole cutout -->
+    <path
+        android:fillColor="#ffffff"
+        android:fillType="evenOdd"
+        android:pathData="M185,230 L295,230 L295,305 Q295,318 282,318 L198,318 Q185,318 185,305 L185,230 Z M248,268 A8,8 0 1,1 232,268 A8,8 0 1,1 248,268 Z M234,272 L246,272 L240,295 Z" />
+</vector>

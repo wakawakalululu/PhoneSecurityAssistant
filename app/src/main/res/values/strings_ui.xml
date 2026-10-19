@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--suppress LongLine --><resources>
+    <!-- Menu option / TV button: open the built-in terminal. -->
+    <string name="ui_terminal">终端</string>
+    <!-- Menu option / TV button: open the remote access & monitoring screen. -->
+    <string name="ui_remote">远程与监控</string>
+    <!-- Status line on the main screen.
+         Param 1: the current privilege mode. -->
+    <string name="ui_privilege_fmt">提权模式：%1$s</string>
+    <!-- Status line on the main screen: no remote tool is running. -->
+    <string name="ui_remote_stopped">远程服务：未运行</string>
+    <!-- Status line on the main screen.
+         Param 1: the state of each remote tool, joined with a separator. -->
+    <string name="ui_remote_running_fmt">远程服务：%1$s</string>
+    <!-- Remote tool state.
+         Param 1: the (translated) name of the tool. -->
+    <string name="ui_tool_running_fmt">%1$s 运行中</string>
+    <!-- Remote tool state.
+         Param 1: the (translated) name of the tool. -->
+    <string name="ui_tool_stopped_fmt">%1$s 已停止</string>
+    <!-- Remote tool state.
+         Param 1: the (translated) name of the tool. -->
+    <string name="ui_tool_idle_fmt">%1$s 未运行</string>
+    <!-- Title of the in-app help dialog. -->
+    <string name="ui_help_title">使用帮助</string>
+    <!-- Body of the in-app help dialog. -->
+    <string name="ui_help_message">1. 启动服务：在主界面点击「启动」，SSH 服务开始监听（端口可在「设置」中查看或修改）。\n2. 终端：菜单 →「终端」，可直接在应用内执行命令（支持 应用 / Root / ADB 提权模式）。\n3. 远程与监控：菜单 →「远程与监控」，可配置并一键启停 frpc 内网穿透、Tailscale 组网和哪吒监控上报。\n4. 提权与权限：「设置」→「权限与提权」可切换提权模式并检测 Root 权限。\n5. 无线调试：如需 ADB 模式，请先在开发者选项中开启「无线调试」，再回到「设置」中完成配对。</string>
+</resources>

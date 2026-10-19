@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--suppress LongLine -->
+<resources>
+    <!-- Toolbar/screen title of the built-in terminal. -->
+    <string name="term_title">Terminal</string>
+
+    <!-- The current privilege mode of the terminal.
+         Param 1: the translated name of the privilege mode. -->
+    <string name="term_mode_fmt">Privilege mode: %1$s</string>
+    <!-- Tooltip of the mode button: it cycles through the modes. -->
+    <string name="term_mode_switch_hint">Tap to switch the privilege mode (App / Root / ADB)</string>
+    <!-- Hint of the command input field. -->
+    <string name="term_hint">Enter a command</string>
+    <!-- Button: run the entered command. -->
+    <string name="term_run">Run</string>
+    <!-- Button: stop the running command. -->
+    <string name="term_stop">Stop</string>
+    <!-- Button: clear the console output. -->
+    <string name="term_clear">Clear</string>
+    <!-- Button: recall the previous command from the history. -->
+    <string name="term_history_up">↑</string>
+    <!-- Button: recall the next command from the history. -->
+    <string name="term_history_down">↓</string>
+
+    <!-- Section label above the remote tool quick action buttons. -->
+    <string name="term_quick_actions">Remote tool quick actions</string>
+    <!-- Quick action button: start the matching remote tool.
+         Param 1: the translated name of the tool. -->
+    <string name="term_tool_start_fmt">Start %1$s</string>
+    <!-- Quick action button: stop the matching remote tool.
+         Param 1: the translated name of the tool. -->
+    <string name="term_tool_stop_fmt">Stop %1$s</string>
+    <!-- Toast after tapping a quick action that starts a tool.
+         Param 1: the translated name of the tool. -->
+    <string name="term_tool_starting_toast_fmt">Starting %1$s…</string>
+    <!-- Toast after tapping a quick action that stops a tool.
+         Param 1: the translated name of the tool. -->
+    <string name="term_tool_stopping_toast_fmt">Stopping %1$s…</string>
+
+    <!-- Placeholder shown while the console has no output yet. -->
+    <string name="term_console_empty">No output yet. Enter a command and press "Run".</string>
+    <!-- Status text while a command is running. -->
+    <string name="term_status_running">Running…</string>
+    <!-- Status text while no command is running. -->
+    <string name="term_status_idle">Ready</string>
+
+    <!-- Error: no "su" binary available for the root mode. -->
+    <string name="term_no_su">No usable "su" found; cannot run the command with root privileges.</string>
+    <!-- Hint shown after "term_no_su"; how to fix the problem. -->
+    <string name="term_no_su_hint">Check the root mode and the su path in the settings.</string>
+    <!-- Error: the ADB mode is selected but there is no ADB connection. -->
+    <string name="term_need_adb">No ADB (wireless debugging) connection. Pair and connect on the "Remote &amp; monitoring" screen first.</string>
+    <!-- Error when running a command failed.
+         Param 1: the error message. -->
+    <string name="term_io_error_fmt">Execution failed: %1$s</string>
+
+    <!-- Echo of the command that is being run.
+         Param 1: the command line. -->
+    <string name="term_started_fmt">$ %1$s</string>
+    <!-- The process exited on its own.
+         Param 1: the exit code. -->
+    <string name="term_finished_fmt">[process exited with code %1$d]</string>
+    <!-- The process was stopped by the user. -->
+    <string name="term_stopped_fmt">[process stopped]</string>
+
+    <!-- Example commands the user can try. -->
+    <string name="term_help">Examples: id, getprop, frpc -c …, tailscale status, nezha-agent -c …</string>
+    <!-- Note about long-running tasks and where to find them. -->
+    <string name="term_bg_note">Long-running tasks keep running in the background; see the "Remote &amp; monitoring" screen for their status.</string>
+</resources>

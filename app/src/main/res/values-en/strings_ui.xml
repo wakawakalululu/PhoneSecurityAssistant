@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--suppress LongLine -->
+<resources>
+    <!-- Menu option / TV button: open the built-in terminal. -->
+    <string name="ui_terminal">Terminal</string>
+    <!-- Menu option / TV button: open the remote access & monitoring screen. -->
+    <string name="ui_remote">Remote &amp; monitoring</string>
+    <!-- Status line on the main screen.
+         Param 1: the current privilege mode. -->
+    <string name="ui_privilege_fmt">Privilege mode: %1$s</string>
+    <!-- Status line on the main screen: no remote tool is running. -->
+    <string name="ui_remote_stopped">Remote tools: not running</string>
+    <!-- Status line on the main screen.
+         Param 1: the state of each remote tool, joined with a separator. -->
+    <string name="ui_remote_running_fmt">Remote tools: %1$s</string>
+    <!-- Remote tool state.
+         Param 1: the (translated) name of the tool. -->
+    <string name="ui_tool_running_fmt">%1$s running</string>
+    <!-- Remote tool state.
+         Param 1: the (translated) name of the tool. -->
+    <string name="ui_tool_stopped_fmt">%1$s stopped</string>
+    <!-- Remote tool state.
+         Param 1: the (translated) name of the tool. -->
+    <string name="ui_tool_idle_fmt">%1$s idle</string>
+    <!-- Title of the in-app help dialog. -->
+    <string name="ui_help_title">Help</string>
+    <!-- Body of the in-app help dialog. -->
+    <string name="ui_help_message">1. Start the service: tap “Start” on the main screen; the SSH server starts listening (see “Settings” for the port).\n2. Terminal: menu → “Terminal” to run commands inside the app (app / root / ADB privilege modes).\n3. Remote &amp; monitoring: menu → “Remote &amp; monitoring” to configure and start/stop frpc, Tailscale and the Nezha monitoring agent.\n4. Privileges: “Settings” → “Privileges” to switch the privilege mode and detect root.\n5. Wireless debugging: for ADB mode, enable “Wireless debugging” in the developer options first, then pair in “Settings”.</string>
+</resources>

@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--suppress LongLine -->
+<resources>
+    <!-- Shown in the reporting panel when the agent has not been configured yet. -->
+    <string name="nezha_not_configured">尚未配置…</string>
+    <!-- Error message when the nezha-agent executable cannot be found. -->
+    <string name="nezha_no_binary">缺少 nezha-agent 可执行文件，请在“远程与监控”页面导入或下载。</string>
+    <!-- Summary line: the configured dashboard address.
+         Param 1: server address, e.g. "demo.nz.leishi.io:8008". -->
+    <string name="nezha_summary_server_fmt">面板：%1$s</string>
+    <!-- Summary line: whether TLS is used.
+         Param 1: nezha_on or nezha_off. -->
+    <string name="nezha_summary_tls_fmt">TLS：%1$s</string>
+    <!-- Summary line: whether a client secret has been set.
+         Param 1: nezha_set or nezha_unset. -->
+    <string name="nezha_summary_secret_fmt">密钥：%1$s</string>
+    <!-- Summary line: whether remote command execution is disabled.
+         Param 1: nezha_on or nezha_off. -->
+    <string name="nezha_summary_cmd_fmt">禁止远程命令：%1$s</string>
+    <!-- Generic value: a secret/path has been set. -->
+    <string name="nezha_set">已设置</string>
+    <!-- Generic value: a secret/path has not been set. -->
+    <string name="nezha_unset">未设置</string>
+    <!-- Generic value: a boolean option is enabled. -->
+    <string name="nezha_on">开启</string>
+    <!-- Generic value: a boolean option is disabled. -->
+    <string name="nezha_off">关闭</string>
+    <!-- Summary line: the nezha-agent executable was found. -->
+    <string name="nezha_binary_ok">哪吒 Agent 可执行文件已就绪</string>
+    <!-- Summary line: the nezha-agent executable is missing. -->
+    <string name="nezha_binary_missing">缺少 nezha-agent 可执行文件，请在“远程与监控”页面导入或下载</string>
+    <!-- Title of the reporting panel (the nezha-agent log viewer). -->
+    <string name="nezha_panel_title">监控上报面板</string>
+</resources>

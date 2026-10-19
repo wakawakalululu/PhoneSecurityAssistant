@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--suppress LongLine -->
+<resources>
+
+    <!-- Single choice: display names of the privilege modes used for
+         SSH logins and the built-in terminal.
+         The matching values are in st_ev_shell_mode. -->
+    <string-array name="st_et_shell_mode">
+        <item>@string/pe_mode_app</item>
+        <item>@string/pe_mode_root</item>
+        <item>@string/pe_mode_adb</item>
+    </string-array>
+
+    <!-- Single choice: stored values of the privilege modes
+         used for SSH logins and the built-in terminal (app/root/adb). -->
+    <string-array name="st_ev_shell_mode">
+        <item>app</item>
+        <item>root</item>
+        <item>adb</item>
+    </string-array>
+
+</resources>

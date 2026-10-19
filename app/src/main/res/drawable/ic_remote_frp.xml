@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- frpc: reverse proxy / port forwarding (two opposite arrows). -->
+<vector xmlns:android="http://schemas.android.com/apk/res/android"
+        android:width="24dp"
+        android:height="24dp"
+        android:tint="?attr/colorSecondary"
+        android:viewportWidth="960"
+        android:viewportHeight="960">
+    <path
+        android:fillColor="@android:color/white"
+        android:pathData="M160,320L560,320L560,240L720,360L560,480L560,400L160,400Z" />
+    <path
+        android:fillColor="@android:color/white"
+        android:pathData="M800,640L400,640L400,560L240,680L400,800L400,720L800,720Z" />
+</vector>

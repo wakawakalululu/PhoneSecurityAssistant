@@ -1,0 +1,80 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--suppress LongLine -->
+<resources>
+    <!-- Preference/section label: name of the frp client tool. -->
+    <string name="remote_tool_frp">frpc reverse proxy</string>
+    <!-- Preference/section label: name of the Tailscale tool. Do NOT translate "Tailscale". -->
+    <string name="remote_tool_tailscale">Tailscale</string>
+    <!-- Preference/section label: name of the Nezha monitoring agent. Do NOT translate "Nezha". -->
+    <string name="remote_tool_nezha">Nezha monitoring agent</string>
+
+    <!-- Name of the background service. -->
+     <string name="remote_service_name">Phone Security Assistant remote tools</string>
+    <!-- Service description needed for Android OS. -->
+    <string name="remote_service_description">Runs the frpc reverse proxy, Tailscale and the Nezha monitoring agent in the background.</string>
+    <!-- Notification text while tools are starting. -->
+    <string name="remote_notification_starting">Starting…</string>
+    <!-- Notification text while tools are running.
+         Param 1: comma separated list of running tools. -->
+    <string name="remote_notification_running">Running: %1$s</string>
+    <!-- Error message written to the tool its log.
+         Param 1: tool name, Param 2: error message. -->
+    <string name="err_remote_start_failed">%1$s failed to start: %2$s</string>
+
+    <!-- Screen title. -->
+    <string name="remote_screen_title">Remote &amp; monitoring</string>
+    <!-- Information text on the remote access screen. -->
+    <string name="remote_hint">These tools run in the background using a foreground service and keep running after the app is closed; see the system notification for their state.</string>
+    <!-- Tool state. -->
+    <string name="remote_status_running">running</string>
+    <!-- Tool state. -->
+    <string name="remote_status_stopped">not running</string>
+    <!-- Tool state chip: nothing has been configured for this tool yet. -->
+    <string name="rc_state_not_configured">not configured</string>
+    <!-- Button: show the log of a tool. -->
+    <string name="remote_btn_log">Log</string>
+    <!-- Button: install the binary of a tool. -->
+    <string name="remote_btn_install">Install</string>
+    <!-- Dialog option: import a binary from a file. -->
+    <string name="remote_btn_import">Import from file</string>
+    <!-- Dialog option: download the official binary. -->
+    <string name="remote_btn_download">Download</string>
+    <!-- Button: stop all tools. -->
+    <string name="remote_all_stop">Stop all</string>
+    <!-- Global state on the remote access screen.
+         Param 1: number of running tools. -->
+    <string name="remote_running_count_fmt">Running tools: %1$d</string>
+    <!-- Dialog title of the log viewer.
+         Param 1: tool name. -->
+    <string name="remote_log_title_fmt">Log: %1$s</string>
+    <!-- Placeholder when a log is empty. -->
+    <string name="remote_log_empty">(no log yet)</string>
+    <!-- Button: clear the log. -->
+    <string name="remote_btn_clear_log">Clear log</string>
+    <!-- Dialog message while downloading.
+         Param 1: binary names. -->
+    <string name="remote_download_progress_fmt">Downloading %1$s …</string>
+    <!-- Download finished.
+         Param 1: binary names. -->
+    <string name="remote_download_ok_fmt">%1$s downloaded</string>
+    <!-- Download failed.
+         Param 1: error message. -->
+    <string name="remote_download_failed_fmt">Download failed: %1$s</string>
+    <!-- Download not possible for this cpu architecture.
+         Param 1: ABI name. -->
+    <string name="remote_download_unsupported_abi">Online download is not available for %1$s; import the binary manually</string>
+    <!-- Import finished.
+         Param 1: binary name. -->
+    <string name="remote_import_ok_fmt">Imported: %1$s</string>
+    <!-- Import failed.
+         Param 1: error message. -->
+    <string name="remote_import_failed_fmt">Import failed: %1$s</string>
+    <!-- Warning: imported binaries are not in the native library directory. -->
+    <string name="remote_import_root_hint">Imported binaries can only be executed with root privileges</string>
+    <!-- Button: bring tailscale up. -->
+    <string name="remote_ts_up">Connect</string>
+    <!-- Button: show tailscale status. -->
+    <string name="remote_ts_status">Status</string>
+    <!-- Button: bring tailscale down. -->
+    <string name="remote_ts_down">Disconnect</string>
+</resources>

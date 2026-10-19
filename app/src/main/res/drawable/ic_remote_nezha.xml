@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Nezha monitoring agent: reporting panel (bar chart). -->
+<vector xmlns:android="http://schemas.android.com/apk/res/android"
+        android:width="24dp"
+        android:height="24dp"
+        android:tint="?attr/colorSecondary"
+        android:viewportWidth="960"
+        android:viewportHeight="960">
+    <path
+        android:fillColor="@android:color/white"
+        android:pathData="M220,560L330,560L330,800L220,800Z" />
+    <path
+        android:fillColor="@android:color/white"
+        android:pathData="M425,360L535,360L535,800L425,800Z" />
+    <path
+        android:fillColor="@android:color/white"
+        android:pathData="M630,480L740,480L740,800L630,800Z" />
+    <path
+        android:fillColor="@android:color/white"
+        android:pathData="M140,840L820,840L820,880L140,880Z" />
+</vector>

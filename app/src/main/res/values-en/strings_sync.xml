@@ -1,0 +1,113 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--suppress LongLine -->
+<resources>
+    <!-- Menu option / screen title: file synchronization. -->
+    <string name="ui_sync">File Sync</string>
+    <!-- Screen title. -->
+    <string name="sync_screen_title">File Sync</string>
+    <!-- Information text on the sync screen. -->
+    <string name="sync_hint">Runs a one-way rclone copy between a remote (SFTP / WebDAV) and a local directory. Tasks run in a foreground service and survive backgrounding; no delete propagation, no bi-directional sync.</string>
+
+    <!-- Name of the background service. -->
+    <string name="sync_service_name">Phone Security Assistant File Sync</string>
+    <!-- Service description needed for Android OS. -->
+    <string name="sync_service_description">Runs rclone file sync tasks in the background.</string>
+    <!-- Notification text while a task is starting. -->
+    <string name="sync_notification_running">Syncing…</string>
+    <!-- Notification text while a task is running.
+         Param 1: task name(s). -->
+    <string name="sync_notification_running_fmt">Syncing: %1$s</string>
+
+    <!-- Section header for the rclone binary card. -->
+    <string name="sync_binary_section">rclone executable</string>
+    <!-- rclone binary is available. -->
+    <string name="sync_binary_ok">rclone: ready</string>
+    <!-- rclone binary is missing. -->
+    <string name="sync_binary_missing">rclone: not installed, please import or download</string>
+    <!-- Error: rclone binary not found. -->
+    <string name="sync_no_binary">Missing rclone executable; import or download it from “File Sync” or “Settings”</string>
+    <!-- Error: task not fully configured. -->
+    <string name="sync_not_configured">Fill in the task name, remote host, remote path and local path</string>
+
+    <!-- Button: create a new task. -->
+    <string name="sync_new_task">New task</string>
+    <!-- Button: edit a task. -->
+    <string name="sync_btn_edit">Edit</string>
+    <!-- Button: delete a task. -->
+    <string name="sync_btn_delete">Delete</string>
+    <!-- Confirm deletion.
+         Param 1: task name. -->
+    <string name="sync_confirm_delete">Delete task “%1$s”?</string>
+
+    <!-- Task state: idle. -->
+    <string name="sync_state_idle">Idle</string>
+    <!-- Task state: running. -->
+    <string name="sync_state_running">Running</string>
+    <!-- Task state: succeeded. -->
+    <string name="sync_state_succeeded">Done</string>
+    <!-- Task state: failed. -->
+    <string name="sync_state_failed">Failed</string>
+    <!-- Task state: cancelled. -->
+    <string name="sync_state_cancelled">Cancelled</string>
+
+    <!-- Direction label: download (remote → local). -->
+    <string name="sync_dir_download">Download ←</string>
+    <!-- Direction label: upload (local → remote). -->
+    <string name="sync_dir_upload">Upload →</string>
+    <!-- Task summary.
+         Param 1: direction arrow, Param 2: remote url, Param 3: local path. -->
+    <string name="sync_summary_fmt">%1$s %2$s → %3$s</string>
+    <!-- Progress text.
+         Param 1: percent, Param 2: transferred, Param 3: total. -->
+    <string name="sync_progress_fmt">%1$d%%  ·  %2$s / %3$s</string>
+    <!-- Progress text while running without a known total. -->
+    <string name="sync_progress_running">Transferring…</string>
+
+    <!-- Dialog field: task name. -->
+    <string name="sync_field_name">Task name</string>
+    <!-- Dialog field: remote backend type. -->
+    <string name="sync_field_remote_type">Remote type</string>
+    <!-- Dialog field: remote host. -->
+    <string name="sync_field_host">Host</string>
+    <!-- Dialog field: remote port. -->
+    <string name="sync_field_port">Port (empty = default)</string>
+    <!-- Dialog field: remote user. -->
+    <string name="sync_field_user">Username</string>
+    <!-- Dialog field: remote password. -->
+    <string name="sync_field_password">Password</string>
+    <!-- Dialog field: remote path. -->
+    <string name="sync_field_remote_path">Remote path</string>
+    <!-- Dialog field: local path (POSIX path, e.g. /sdcard/Photos). -->
+    <string name="sync_field_local_path">Local path (e.g. /sdcard/Photos)</string>
+    <!-- Dialog field: copy direction. -->
+    <string name="sync_field_direction">Direction</string>
+    <!-- Dialog field: use TLS (WebDAV). -->
+    <string name="sync_field_tls">Use HTTPS (WebDAV)</string>
+
+    <!-- Dialog section: scheduling. -->
+    <string name="sync_field_schedule_section">Auto schedule</string>
+    <!-- Dialog field: enable scheduling. -->
+    <string name="sync_field_schedule_enabled">Enable auto schedule</string>
+    <!-- Dialog field: schedule interval in minutes. -->
+    <string name="sync_field_schedule_interval">Interval (minutes)</string>
+    <!-- Dialog field: require Wi-Fi. -->
+    <string name="sync_field_schedule_require_wifi">Only on Wi-Fi</string>
+    <!-- Dialog field: require charging. -->
+    <string name="sync_field_schedule_require_charging">Only when charging</string>
+    <!-- Schedule summary: interval.
+         Param 1: interval in minutes. -->
+    <string name="sync_schedule_interval_fmt">Every %1$d min</string>
+    <!-- Schedule summary: Wi-Fi only. -->
+    <string name="sync_schedule_wifi">Wi-Fi only</string>
+    <!-- Schedule summary: charging only. -->
+    <string name="sync_schedule_charging">Charging only</string>
+
+    <!-- Notification channel name for sync results. -->
+    <string name="sync_notification_channel_result">Sync results</string>
+    <!-- Notification title: sync succeeded.
+         Param 1: task name. -->
+    <string name="sync_notification_succeeded_fmt">Sync complete: %1$s</string>
+    <!-- Notification title: sync failed.
+         Param 1: task name. -->
+    <string name="sync_notification_failed_fmt">Sync failed: %1$s</string>
+</resources>

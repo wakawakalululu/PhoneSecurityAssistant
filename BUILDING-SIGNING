@@ -1,0 +1,39 @@
+Setup signing:
+
+    Edit your private/local "~/.gradle/gradle.properties" and add a line:
+
+        Sshd4a.properties=/path/to/Sshd4a.properties
+
+    Edit/create the file "/path/to/Sshd4a.properties":
+
+        sign.storeFile=/path/to/myKeystore.jks
+        sign.storePassword=myPass
+        sign.keyAlias=myAlias
+        sign.keyPassword=myPass
+
+    Alternatively the properties file can be passed directly on the Gradle
+    command line (equivalent to the "gradle.properties" entry above; this is
+    what CI does):
+
+        ./gradlew assembleRelease -PSshd4a.properties=/path/to/Sshd4a.properties
+
+    "app/build.gradle" applies the release signing configuration only when
+    that property points to an existing properties file with content.
+    Otherwise the release APK is built UNSIGNED:
+
+        Keystore properties file not found. No signing configuration will be applied.
+
+    GitHub Actions (".github/workflows/build-apk.yml") does this automatically
+    from the repository secrets:
+
+        KEYSTORE_BASE64     base64 of the keystore, e.g.  base64 -w0 myKeystore.jks
+        KEYSTORE_PASSWORD   keystore password
+        KEY_ALIAS           key alias
+        KEY_PASSWORD        key password
+
+    The workflow decodes the keystore to "$RUNNER_TEMP/keystore.jks", writes a
+    "sign.*" properties file and passes it via "-PSshd4a.properties". When the
+    secrets are not set (e.g. pull requests from forks) the release APK stays
+    unsigned and the build still succeeds.
+
+    Keep the keystore, its passwords and the properties file out of the repo.

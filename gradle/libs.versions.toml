@@ -1,0 +1,94 @@
+[versions]
+# Android 8.0 (API 26) as minimum.
+# Storage permissions: MANAGE_EXTERNAL_STORAGE on API 30+,
+# WRITE_EXTERNAL_STORAGE on API 29 and below.
+# See https://developer.android.com/training/data-storage
+minSdk = "26"
+# Android 16: stuck on targetSdk 36 until we fix GitHub #34
+targetSdk = "36"
+compileSdk = "36"
+
+# JDK used by Gradle
+javaToolchain = "25"
+
+# https://developer.android.com/studio/projects/configure-agp-ndk
+ndk = "30.0.14904198"
+# don't forget to update CMakeLists.txt cmake_minimum_required
+cmakeVersion = "4.1.2"
+
+androidGradlePlugin = "9.3.2"
+
+# https://developer.android.com/jetpack/androidx/versions
+
+androidxActivity = "1.13.0"
+androidxAnnotation = "1.10.0"
+androidxAppcompat = "1.8.0"
+androidxConstraintlayout = "2.2.2"
+# stuck on 1.18.0 until we can update targetSdk to 37
+androidxCore = "1.18.0"
+androidxFragment = "1.9.0"
+androidxLifecycle = "2.11.0"
+androidxLocalbroadcastmanager = "1.1.0"
+androidxTransition = "1.7.0"
+
+# https://developer.android.com/jetpack/androidx/releases/test
+androidxTestCore = '1.7.0'
+androidxTestRunner = '1.7.0'
+androidxTestRules = '1.7.0'
+
+# Pure-JVM unit test dependencies (src/test)
+junit = "4.13.2"
+mockito = "5.14.2"
+orgjson = "20240303"
+
+# https://github.com/google/desugar_jdk_libs/blob/master/CHANGELOG.md
+desugar = "2.1.5"
+
+# https://github.com/material-components/material-components-android/releases
+material = '1.14.0'
+
+# https://github.com/MuntashirAkon/libadb-android (available via JitPack)
+libadb = "3.1.1"
+# https://mvnrepository.com/artifact/org.conscrypt/conscrypt-android
+conscrypt = "2.5.3"
+# https://mvnrepository.com/artifact/org.bouncycastle/bcprov-jdk15to18
+# libadb publishes this as runtime-only, but the app compiles against it
+# (self-signed certificate generation for ADB pairing).
+bouncycastle = "1.81"
+okhttp = "4.12.0"
+
+[libraries]
+androidx-activity = { group = "androidx.activity", name = "activity-ktx", version.ref = "androidxActivity" }
+androidx-annotation = { group = "androidx.annotation", name = "annotation", version.ref = "androidxAnnotation" }
+androidx-appcompat = { group = "androidx.appcompat", name = "appcompat", version.ref = "androidxAppcompat" }
+androidx-constraintlayout = { group = "androidx.constraintlayout", name = "constraintlayout", version.ref = "androidxConstraintlayout" }
+androidx-core = { group = "androidx.core", name = "core-ktx", version.ref = "androidxCore" }
+androidx-fragment = { group = "androidx.fragment", name = "fragment-ktx", version.ref = "androidxFragment" }
+androidx-lifecycle-livedata = { group = "androidx.lifecycle", name = "lifecycle-livedata-ktx", version.ref = "androidxLifecycle" }
+androidx-lifecycle-viewmodel = { group = "androidx.lifecycle", name = "lifecycle-viewmodel-ktx", version.ref = "androidxLifecycle" }
+androidx-localbroadcastmanager = { group = "androidx.localbroadcastmanager", name="localbroadcastmanager", version.ref = "androidxLocalbroadcastmanager"}
+androidx-test-core = { group = "androidx.test", name = "core", version.ref = "androidxTestCore" }
+androidx-test-runner = { group = "androidx.test", name = "runner", version.ref = "androidxTestRunner" }
+androidx-test-rules = { group = "androidx.test", name = "rules", version.ref = "androidxTestRules" }
+junit = { group = "junit", name = "junit", version.ref = "junit" }
+mockito-core = { group = "org.mockito", name = "mockito-core", version.ref = "mockito" }
+orgjson = { group = "org.json", name = "json", version.ref = "orgjson" }
+androidx-transition = { module = "androidx.transition:transition", version.ref = "androidxTransition" }
+
+google-material = { group = "com.google.android.material", name = "material", version.ref = "material" }
+
+# ADB client (pure Java) - used for the 'ADB mode' (wireless debugging) features
+libadb-android = { group = "com.github.MuntashirAkon", name = "libadb-android", version.ref = "libadb" }
+# Conscrypt: provides TLSv1.3 + exportKeyingMaterial, required for ADB pairing
+conscrypt-android = { group = "org.conscrypt", name = "conscrypt-android", version.ref = "conscrypt" }
+# BouncyCastle: used to generate the self-signed certificate for ADB pairing.
+# libadb depends on it as runtime-only; it is listed here because the app
+# compiles against it directly.
+bcprov = { group = "org.bouncycastle", name = "bcprov-jdk15to18", version.ref = "bouncycastle" }
+okhttp = { group = "com.squareup.okhttp3", name = "okhttp", version.ref = "okhttp" }
+google-desugar = { group = "com.android.tools", name = "desugar_jdk_libs_nio", version.ref = "desugar" }
+
+[plugins]
+android-application = { id = "com.android.application", version.ref = "androidGradlePlugin" }
+android-library = { id = "com.android.library", version.ref = "androidGradlePlugin" }
+

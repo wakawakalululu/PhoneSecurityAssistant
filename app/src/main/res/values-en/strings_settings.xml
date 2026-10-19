@@ -1,0 +1,112 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--suppress LongLine -->
+<resources>
+
+    <!-- Preference category title: privilege escalation (root / adb). -->
+    <string name="st_pc_privilege">Privileges &amp; Escalation</string>
+    <!-- Preference summary/info message: umbrella note for the section.
+         Also shown in the "shell mode" choice dialogs. -->
+    <string name="st_ps_shell_mode">Root mode runs SSH sessions and the terminal as root; ADB mode runs them through wireless debugging and does not require root access.</string>
+    <!-- Preference option -->
+    <string name="st_pt_shell_mode">Privilege mode (SSH login)</string>
+    <!-- Preference option -->
+    <string name="st_pt_su_path">su path</string>
+    <!-- Preference summary shown when "st_pt_su_path" is not set. -->
+    <string name="st_ps_su_path">Empty: auto-detect</string>
+    <!-- Dialog message for "st_pt_su_path". -->
+    <string name="st_pm_su_path">Enter the full path of the su executable; leave empty to auto-detect.</string>
+    <!-- Menu option: check for root ("su") availability. -->
+    <string name="st_detect_root">Detect root access</string>
+    <!-- info message after a successful root check.
+         Param 1: path of the detected su binary. -->
+    <string name="st_root_detected_fmt">Detected su: %1$s</string>
+    <!-- info message after a failed root check. -->
+    <string name="st_root_not_found">No usable root access detected</string>
+    <!-- Preference option -->
+    <string name="st_pt_terminal_mode">Terminal privilege mode</string>
+
+    <!-- Preference category title: ADB (wireless debugging). -->
+    <string name="st_pc_adb">ADB Wireless Debugging</string>
+    <!-- Preference option -->
+    <string name="st_pt_adb_host">Host address</string>
+    <!-- Preference option -->
+    <string name="st_pt_adb_port">Port</string>
+    <!-- Menu option: pair with the device using a wireless debugging pairing code. -->
+    <string name="st_adb_pair">Pair using a pairing code</string>
+    <!-- Menu option: connect and show the current ADB connection status. -->
+    <string name="st_adb_status">Connect / status</string>
+
+    <!-- Preference category title: frpc reverse proxy. -->
+    <string name="st_pc_frp">frpc Tunnel</string>
+    <!-- Preference option -->
+    <string name="st_pt_frp_auto_start">Start automatically with the remote service</string>
+    <!-- Preference option -->
+    <string name="st_pt_frp_server_addr">Server address</string>
+    <!-- Preference option -->
+    <string name="st_pt_frp_server_port">Server port</string>
+    <!-- Preference option -->
+    <string name="st_pt_frp_token">Token</string>
+    <!-- Preference option -->
+    <string name="st_pt_frp_proxy_name">Proxy name</string>
+    <!-- Preference option -->
+    <string name="st_pt_frp_remote_port">Remote port</string>
+    <!-- Preference option -->
+    <string name="st_pt_frp_binary">frpc executable path</string>
+    <!-- Menu option: download the official frpc binary. -->
+    <string name="st_download_frpc">Download frpc</string>
+
+    <!-- Preference category title: Tailscale networking. -->
+    <string name="st_pc_tailscale">Tailscale Networking</string>
+    <!-- Preference option -->
+    <string name="st_pt_ts_auto_start">Start tailscaled automatically</string>
+    <!-- Preference option -->
+    <string name="st_pt_ts_auth_key">Auth key</string>
+    <!-- Preference option -->
+    <string name="st_pt_ts_hostname">Device name (hostname)</string>
+    <!-- Preference option -->
+    <string name="st_pt_ts_tun_mode">TUN mode (requires root)</string>
+    <!-- Preference option -->
+    <string name="st_pt_ts_binary">tailscaled executable path</string>
+    <!-- Menu option: download the official Tailscale binaries. -->
+    <string name="st_download_tailscale">Download Tailscale</string>
+
+    <!-- Preference category title: Nezha monitoring agent. -->
+    <string name="st_pc_nezha">Nezha Monitoring</string>
+    <!-- Preference option -->
+    <string name="st_pt_nezha_auto_start">Report automatically in the background</string>
+    <!-- Preference option -->
+    <string name="st_pt_nezha_server">Dashboard address (host:port)</string>
+    <!-- Preference option -->
+    <string name="st_pt_nezha_secret">Secret</string>
+    <!-- Preference option -->
+    <string name="st_pt_nezha_tls">Use TLS</string>
+    <!-- Preference option -->
+    <string name="st_pt_nezha_disable_command_execute">Disallow remote command execution from the dashboard</string>
+    <!-- Preference option -->
+    <string name="st_pt_nezha_binary">nezha-agent executable path</string>
+    <!-- Menu option: download the official nezha-agent binary. -->
+    <string name="st_download_nezha">Download nezha-agent</string>
+
+     <string name="st_pc_webdav">WebDAV (read-only files)</string>
+     <string name="st_pt_webdav_url">HTTPS server URL</string>
+     <string name="st_ps_webdav_url">After configuration, the remote root appears in the system file picker under “Phone Security Assistant”. Read-only browsing/opening only; no local mount path is created.</string>
+     <string name="st_pt_webdav_username">Username</string>
+     <string name="st_pt_webdav_password">Password</string>
+     <string name="st_webdav_browse">Browse WebDAV files</string>
+     <string name="st_webdav_picker_unavailable">The system file picker is unavailable</string>
+     <string name="st_webdav_invalid_config">Enter a valid HTTPS WebDAV URL</string>
+     <string name="webdav_provider_label">Phone Security Assistant WebDAV</string>
+
+    <!-- Preference category title: file synchronization. -->
+    <string name="st_pc_sync">File Sync rclone</string>
+    <!-- Preference option -->
+    <string name="st_pt_sync_binary">rclone executable path</string>
+    <!-- Menu option: download the official rclone binary. -->
+    <string name="st_download_rclone">Download rclone</string>
+
+    <!-- Preference category title: remote access and monitoring services. -->
+    <string name="st_pc_remote">Remote &amp; Monitoring Service</string>
+    <!-- Preference option -->
+    <string name="st_pt_remote_start_with_sshd">Start together with the sshd service</string>
+
+</resources>

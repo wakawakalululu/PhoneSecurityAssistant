@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--suppress LongLine -->
+<resources>
+    <!-- Shown in the reporting panel when the agent has not been configured yet. -->
+    <string name="nezha_not_configured">Not configured yet…</string>
+    <!-- Error message when the nezha-agent executable cannot be found. -->
+    <string name="nezha_no_binary">nezha-agent binary not found; import or download it on the Remote &amp; monitoring screen.</string>
+    <!-- Summary line: the configured dashboard address.
+         Param 1: server address, e.g. "demo.nz.leishi.io:8008". -->
+    <string name="nezha_summary_server_fmt">Dashboard: %1$s</string>
+    <!-- Summary line: whether TLS is used.
+         Param 1: nezha_on or nezha_off. -->
+    <string name="nezha_summary_tls_fmt">TLS: %1$s</string>
+    <!-- Summary line: whether a client secret has been set.
+         Param 1: nezha_set or nezha_unset. -->
+    <string name="nezha_summary_secret_fmt">Secret: %1$s</string>
+    <!-- Summary line: whether remote command execution is disabled.
+         Param 1: nezha_on or nezha_off. -->
+    <string name="nezha_summary_cmd_fmt">Remote commands disabled: %1$s</string>
+    <!-- Generic value: a secret/path has been set. -->
+    <string name="nezha_set">set</string>
+    <!-- Generic value: a secret/path has not been set. -->
+    <string name="nezha_unset">not set</string>
+    <!-- Generic value: a boolean option is enabled. -->
+    <string name="nezha_on">yes</string>
+    <!-- Generic value: a boolean option is disabled. -->
+    <string name="nezha_off">no</string>
+    <!-- Summary line: the nezha-agent executable was found. -->
+    <string name="nezha_binary_ok">Nezha agent binary ready</string>
+    <!-- Summary line: the nezha-agent executable is missing. -->
+    <string name="nezha_binary_missing">nezha-agent binary missing; import or download it on the Remote &amp; monitoring screen</string>
+    <!-- Title of the reporting panel (the nezha-agent log viewer). -->
+    <string name="nezha_panel_title">Monitoring/reporting panel</string>
+</resources>

@@ -1,0 +1,314 @@
+# #############################################################################
+# THIS DOCUMENT DESCRIBES HOW TO UPGRADE THE EXTERNAL PACKAGES.
+# It's a living doc, and may/will contain errors!
+# To be honest: it's too complicated... I hope to clean it up one day.
+# #############################################################################
+
+# Prerequisites: see BUILDING and "build.sh"
+# It is assumed you already have git setup for your user.
+
+# If you don't have the autoconf command, install it with:
+sudo apt install autoconf
+
+# #############################################################################
+# Define the versions for the external project code; update the urls if needed
+# #############################################################################
+
+# RSYNC    - https://rsync.samba.org/
+# OPENSSH  - https://github.com/openssh/openssh-portable
+# DROPBEAR - https://matt.ucc.asn.au/dropbear/dropbear.html
+#            or https://github.com/mkj/dropbear
+#            Note we use the mirror at https://dropbear.nl due to asn.au
+#            giving consistent TLS issues
+
+export RSYNC_VERSION="rsync-3.4.4"
+export OPENSSH_VERSION="openssh-10.4p1"
+export DROPBEAR_VERSION="dropbear-2026.94"
+
+export RSYNC_DOWNLOAD="https://download.samba.org/pub/rsync/src/${RSYNC_VERSION}.tar.gz"
+export OPENSSH_DOWNLOAD="https://mirror.ox.ac.uk/pub/OpenBSD/OpenSSH/portable/${OPENSSH_VERSION}.tar.gz"
+export DROPBEAR_DOWNLOAD="https://dropbear.nl/mirror/releases/${DROPBEAR_VERSION}.tar.bz2"
+
+# #############################################################################
+# Java must be version 21 or higher
+# This can be skipped if the java 21 bin directory is already in your path.
+# #############################################################################
+
+export JAVA_HOME=/cygdrive/c/d/jdk/
+export PATH=${JAVA_HOME}/bin:${PATH}
+
+# #############################################################################
+# Define the physical locations.
+# #############################################################################
+
+# The root directory of the Sshd4a project (i.e. where the project's .git is)
+export PROJECT_ROOT=~/Sshd4a
+
+# The temp working directory where the tarballs will be downloaded and git remotes will be setup.
+export SRC_ROOT=~/tmp/sshd4a-tarballs
+
+# Android SDK location
+export ANDROID_HOME=~/android-sdk
+
+# #############################################################################
+# SDK and NDK versions
+# #############################################################################
+
+# Android NDK location/version; upgrade as needed/wanted
+# This must also be updated in gradle/libs.versions.toml
+export ANDROID_NDK=${ANDROID_HOME}/ndk/30.0.14904198
+
+# Android minSdkVersion. The minimal version, upgrade as needed/wanted
+export ANDROID_MIN_SDK=30
+
+# #############################################################################
+# Build platform
+# #############################################################################
+
+# Only choose ONE of these, depending on your device.
+# The first, "aarch64", is most likely the one you want.
+export ANDROID_TARGET=aarch64-linux-android
+# export ANDROID_TARGET=armv7a-linux-androideabi
+# export ANDROID_TARGET=i686-linux-android
+# export ANDROID_TARGET=x86_64-linux-android
+
+# The native platform
+export TOOLCHAIN=${ANDROID_NDK}/toolchains/llvm/prebuilt/linux-x86_64
+# export TOOLCHAIN=${ANDROID_NDK}/toolchains/llvm/prebuilt/windows-x86_64
+
+# #############################################################################
+# Below this point, no configuration changes needed
+# #############################################################################
+
+# Sanity checks.
+if ! command -v java >/dev/null 2>&1; then
+    echo "Error: 'java' not found in your PATH."
+    exit 1
+fi
+
+# Need 21 or up
+JAVA_VER=$(java --version | head -n 1 | awk '{print $2}' | cut -d. -f1)
+if [ -z "$JAVA_VER" ] || [ "$JAVA_VER" -lt 21 ]; then
+    echo "Error: Java 21 is required. Found version: ${JAVA_VER:-unknown}"
+    exit 1
+fi
+
+if [ -z "${ANDROID_NDK}" ]; then
+    echo "ANDROID_NDK is not set or is empty."
+    exit 1
+fi
+if [ ! -d "${ANDROID_NDK}" ]; then
+    echo "${ANDROID_NDK} does not exist."
+    exit 1
+fi
+if [ -z "${TOOLCHAIN}" ]; then
+    echo "TOOLCHAIN is not set or is empty."
+    exit 1
+fi
+
+export AR=${TOOLCHAIN}/bin/llvm-ar
+export CC=${TOOLCHAIN}/bin/${ANDROID_TARGET}${ANDROID_MIN_SDK}-clang
+export AS=${CC}
+export CXX=${TOOLCHAIN}/bin/${ANDROID_TARGET}${ANDROID_MIN_SDK}-clang++
+export LD=${TOOLCHAIN}/bin/ld
+export RANLIB=${TOOLCHAIN}/bin/llvm-ranlib
+export STRIP=${TOOLCHAIN}/bin/llvm-strip
+
+# content for ".gitattributes"
+export GATRR="* text eol=lf\n*.txt text\n*.png binary\n*.jar binary\n"
+
+# add the tools to the path
+export PATH=${ANDROID_HOME}/platform-tools:${TOOLCHAIN}/bin:${PATH}
+
+# #############################################################################
+# Configuration dump
+# #############################################################################
+echo Tools:
+echo JAVA_HOME=${JAVA_HOME}
+echo ANDROID_HOME=${ANDROID_HOME}
+echo ANDROID_NDK=${ANDROID_NDK}
+echo ANDROID_MIN_SDK=${ANDROID_MIN_SDK}
+echo ANDROID_TARGET=${ANDROID_TARGET}
+echo TOOLCHAIN=${TOOLCHAIN}
+
+echo Project:
+echo PROJECT_ROOT=${PROJECT_ROOT}
+echo SRC_ROOT=${SRC_ROOT}
+
+# ############################################################################
+# Step 2.1 - RSYNC
+# ############################################################################
+
+cd ${SRC_ROOT}
+export RSYNC="upstream-rsync"
+
+wget "${RSYNC_DOWNLOAD}" || { echo "Download failed. Exiting."; exit 1; }
+tar -xzf ${RSYNC_VERSION}.tar.gz
+
+# remove broken and/or unneeded rsync symlink
+rm ${RSYNC_VERSION}/md2man
+
+# rename the directory so we don't need to change the git remote names
+mkdir -p ${RSYNC}/app/src/main/cpp/
+mv ${RSYNC_VERSION} ${RSYNC}/app/src/main/cpp/rsync
+
+# Prepare a new repo
+cd ${RSYNC}
+printf "%b" "${GATRR}" > .gitattributes
+git init -b dev .
+git add * .gitattributes
+git commit -a -m "${RSYNC_VERSION}"
+cd ${SRC_ROOT}
+
+# Configure rsync
+cd ${SRC_ROOT}/${RSYNC}/app/src/main/cpp/rsync
+./configure --host ${ANDROID_TARGET} --disable-openssl --disable-xxhash --disable-zstd \
+            --disable-lz4 \
+            --disable-md2man --disable-roll-simd --disable-md5-asm --disable-roll-asm \
+            --enable-largefile
+
+# Switching to the project for merging.
+cd ${PROJECT_ROOT}
+
+# Add remote: "upstream-rsync" pointing to the location used above
+git remote add upstream-rsync ${SRC_ROOT}/${RSYNC}
+
+# pull the new code and merge
+git fetch upstream-rsync
+git merge --allow-unrelated-histories upstream-rsync/dev
+
+#    Merge and solve conflicts as usual.
+#    Typically just "Accept theirs" for all files
+#    EXCEPT for our mandatory changes which are annotated with SSHD4A_*
+#
+#    2025-04-07: files modified:
+#     cpp/rsync/clientserver.c
+#     cpp/rsync/config.h
+#     cpp/rsync/syscall.c
+
+cd ${PROJECT_ROOT}/app/src/main/cpp/
+./prebuild-rsyn.sh
+
+#    Commit and build...
+#
+# Typical issues:
+# - new .c files which need to be added to CMakeLists.txt
+# - compare/edit config.h in OUR source with the NEW one.
+#   Do not simply overwrite ours, as it contains tweaks at the end of the file!
+
+# ############################################################################
+#  Step 2.2 - OPENSSH
+# ############################################################################
+
+cd ${SRC_ROOT}
+export OPENSSH="upstream-openssh"
+
+wget "${OPENSSH_DOWNLOAD}" || { echo "Download failed. Exiting."; exit 1; }
+tar -xzf ${OPENSSH_VERSION}.tar.gz
+
+# rename the directory so we don't need to change the git remote names
+mkdir -p ${OPENSSH}/app/src/main/cpp/
+mv ${OPENSSH_VERSION} ${OPENSSH}/app/src/main/cpp/openssh
+
+# Prepare a new repo
+cd ${OPENSSH}
+printf "%b" "${GATRR}" > .gitattributes
+git init -b dev .
+git add * .gitattributes
+git commit -a -m "${OPENSSH_VERSION}"
+cd ${SRC_ROOT}
+
+# Configure openssh
+cd ${SRC_ROOT}/${OPENSSH}/app/src/main/cpp/openssh
+# autoreconf is normally in /usr/bin
+autoreconf
+./configure --host ${ANDROID_TARGET} --disable-lastlog --disable-utmp --disable-wtmp \
+            --enable-largefile --without-openssl
+
+# Switching to the project for merging.
+cd ${PROJECT_ROOT}
+
+# Add remote: "upstream-openssh" pointing to the location used above
+git remote add upstream-openssh ${SRC_ROOT}/${OPENSSH}
+
+# pull the new code and merge
+git fetch upstream-openssh
+git merge --allow-unrelated-histories upstream-openssh/dev
+
+#    Merge and solve conflicts as usual.
+#    Typically just "Accept theirs" for all files
+#    EXCEPT for our mandatory changes which are annotated with SSHD4A_*
+#
+#    2025-05-29: files modified:
+#      cpp/openssh/openbsd-compat/explicit_bzero.c
+#
+#    Commit and build...
+# Typically there are no issues whatsoever
+
+# ############################################################################
+# Step 2.3 - DROPBEAR
+# ############################################################################
+
+cd ${SRC_ROOT}
+export DROPBEAR="upstream-dropbear"
+
+wget "${DROPBEAR_DOWNLOAD}" || { echo "Download failed. Exiting."; exit 1; }
+tar xf ${DROPBEAR_VERSION}.tar.bz2
+
+# rename the directory so we don't need to change the git remote names
+mkdir -p ${DROPBEAR}/app/src/main/cpp/
+mv ${DROPBEAR_VERSION} ${DROPBEAR}/app/src/main/cpp/dropbear
+
+# Prepare a new repo
+cd ${DROPBEAR}
+printf "%b" "${GATRR}" > .gitattributes
+git init -b dev .
+# ignore warnings about txt files in "rsa-testvectors"
+git add * .gitattributes
+git commit -a -m "${DROPBEAR_VERSION}"
+cd ${SRC_ROOT}
+
+# Configure dropbear
+cd ${SRC_ROOT}/${DROPBEAR}/app/src/main/cpp/dropbear
+./configure --host ${ANDROID_TARGET} --disable-syslog --disable-lastlog \
+            --disable-utmp --disable-wtmp \
+            --enable-bundled-libtom --enable-largefile
+
+# Switching to the project for merging.
+cd ${PROJECT_ROOT}
+
+# Add remote: "upstream-dropbear" pointing to the location used above
+git remote add upstream-dropbear ${SRC_ROOT}/${DROPBEAR}
+
+# pull the new code and merge
+git fetch upstream-dropbear
+git merge --allow-unrelated-histories upstream-dropbear/dev
+
+#    Merge and solve conflicts as usual.
+#    Typically just "Accept theirs" for all files
+#    EXCEPT for our mandatory changes which are (should be) marked with SSHD4A_*
+#
+#    2026-01-08: modified files:
+#      cpp/dropbear/src/
+#         common-session.c
+#         dbrandom.c
+#         dbutil.c
+#         localoptions.h
+#         scp.c
+#         signkey.c
+#         svr-auth.c
+#         svr-authpasswd.c
+#         svr-authpubkey.c
+#         svr-chansession.c
+#         svr-main.c
+#
+#    Merge and solve conflicts as usual.
+
+cd ${PROJECT_ROOT}/app/src/main/cpp
+./prebuild-dropbear.sh
+
+#    Commit and build...
+# Typical issues:
+# - new .c files which need to be added to CMakeLists.txt
+# - compare/edit config.h in OUR source with the NEW one.
+#   Do not simply overwrite ours, as it contains tweaks at the end of the file!

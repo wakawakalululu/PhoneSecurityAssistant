@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--suppress LongLine -->
+<resources>
+    <!-- Menu option / screen title: remote desktop. -->
+    <string name="ui_remote_desktop">Remote Desktop</string>
+    <!-- Screen title. -->
+    <string name="rd_screen_title">Remote Desktop</string>
+    <!-- Information text on the remote desktop screen. -->
+    <string name="rd_hint">Captures the screen via MediaProjection and streams it as MJPEG over HTTP. Open the display URL in a browser to view and control the device in real time. Use with frpc / Tailscale for remote access.</string>
+
+    <!-- Name of the background service. -->
+    <string name="rd_service_name">Phone Security Assistant Remote Desktop</string>
+    <!-- Service description needed for Android OS. -->
+    <string name="rd_service_description">Captures the screen and streams it over HTTP.</string>
+    <!-- Notification text while starting. -->
+    <string name="rd_notification_starting">Starting remote desktop…</string>
+    <!-- Notification text while running.
+         Param 1: port number. -->
+    <string name="rd_notification_running_fmt">Remote desktop running, port %1$s</string>
+
+    <!-- Task state: idle. -->
+    <string name="rd_status_idle">Idle</string>
+    <!-- Task state: running. -->
+    <string name="rd_status_running">Running</string>
+    <!-- Button: start. -->
+    <string name="rd_btn_start">Start sharing</string>
+    <!-- Button: stop. -->
+    <string name="rd_btn_stop">Stop sharing</string>
+    <!-- Port input hint. -->
+    <string name="rd_port">HTTP port (default 8888)</string>
+    <!-- Connection URL.
+         Param 1: port number. -->
+    <string name="rd_url_fmt">Open in browser: http://&lt;device-ip&gt;:%1$s\nOr access via Tailscale / frpc from remote network</string>
+
+    <!-- Accessibility section header. -->
+    <string name="rd_accessibility_section">Remote control setup</string>
+    <!-- Accessibility enabled. -->
+    <string name="rd_accessibility_enabled">Accessibility service enabled, remote control ready</string>
+    <!-- Accessibility disabled. -->
+    <string name="rd_accessibility_disabled">Accessibility service not enabled, remote control unavailable. Please enable "Phone Security Assistant Remote Desktop" in system Accessibility settings.</string>
+    <!-- Button: open accessibility settings. -->
+    <string name="rd_btn_accessibility">Open accessibility settings</string>
+    <!-- Accessibility service description (shown in system settings). -->
+    <string name="rd_accessibility_description">Allows remote users to tap and swipe to control this device via Phone Security Assistant Remote Desktop.</string>
+
+    <!-- Error: MediaProjection not available. -->
+    <string name="rd_error_no_projection">Cannot get screen capture permission</string>
+</resources>

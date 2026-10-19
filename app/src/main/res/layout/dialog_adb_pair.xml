@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    android:padding="16dp"
+    >
+
+    <TextView
+        android:id="@+id/pairHint"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:focusable="false"
+        android:text="@string/adb_pair_hint"
+        />
+
+    <EditText
+        android:id="@+id/host"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/field_margin_top"
+        android:hint="@string/adb_pair_host"
+        android:importantForAutofill="no"
+        android:inputType="textUri"
+        android:maxLines="1"
+        tools:text="127.0.0.1"
+        />
+
+    <EditText
+        android:id="@+id/pairingPort"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/field_margin_top"
+        android:hint="@string/adb_pair_port"
+        android:importantForAutofill="no"
+        android:inputType="number"
+        android:maxLength="5"
+        android:maxLines="1"
+        tools:text="37123"
+        />
+
+    <EditText
+        android:id="@+id/pairingCode"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/field_margin_top"
+        android:hint="@string/adb_pair_code"
+        android:importantForAutofill="no"
+        android:inputType="number"
+        android:maxLength="6"
+        android:maxLines="1"
+        tools:text="123456"
+        />
+
+    <TextView
+        android:id="@+id/pairStatus"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/field_margin_top"
+        android:focusable="false"
+        android:visibility="gone"
+        tools:text="@string/adb_pairing"
+        tools:visibility="visible"
+        />
+</LinearLayout>

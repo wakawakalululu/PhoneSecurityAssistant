@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Tailscale: mesh network (three connected nodes). -->
+<vector xmlns:android="http://schemas.android.com/apk/res/android"
+        android:width="24dp"
+        android:height="24dp"
+        android:tint="?attr/colorSecondary"
+        android:viewportWidth="960"
+        android:viewportHeight="960">
+    <path
+        android:fillColor="@android:color/white"
+        android:pathData="M462,171L498,189L218,749L182,731Z" />
+    <path
+        android:fillColor="@android:color/white"
+        android:pathData="M498,171L462,189L742,749L778,731Z" />
+    <path
+        android:fillColor="@android:color/white"
+        android:pathData="M200,720L760,720L760,760L200,760Z" />
+    <path
+        android:fillColor="@android:color/white"
+        android:pathData="M420,120L540,120L540,240L420,240Z" />
+    <path
+        android:fillColor="@android:color/white"
+        android:pathData="M140,680L260,680L260,800L140,800Z" />
+    <path
+        android:fillColor="@android:color/white"
+        android:pathData="M700,680L820,680L820,800L700,800Z" />
+</vector>

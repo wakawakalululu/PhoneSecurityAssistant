@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <string name="app_name"
+            translatable="false">（春夏秋）掌上管家</string>
+    <string name="service_name"
+            translatable="false">春夏秋手机安全助手</string>
+
+    <!-- Preference category title -->
+    <string name="pc_dropbear"
+            translatable="false">Dropbear SSH</string>
+
+    <!-- Preference category title, summary -->
+    <string name="pc_authorized_keys"
+            translatable="false">“authorized_keys”</string>
+
+    <!-- ListPreference -->
+    <string-array name="pe_ui_theme_mode">
+        <item>@string/pe_ui_theme_from_device</item>
+        <item>@string/pe_ui_theme_light</item>
+        <item>@string/pe_ui_theme_dark</item>
+    </string-array>
+    <string-array name="pv_ui_theme_mode">
+        <item>0</item>
+        <item>1</item>
+        <item>2</item>
+    </string-array>
+
+</resources>

@@ -1,0 +1,103 @@
+# There are several BUILDING information files:
+#
+# 1. this file, BUILDING
+#    Describes how to set up a basic Debian environment
+#    It's really a script, but explicitly not saved as a ".sh" to protect
+#    from accidental execution. You will likely want/need to customise it
+#    before execution. Hence, take a copy and edit that copy!
+#    It assumes you will install the Android SDK in your home directory.
+#
+# The actual project build should be done with "build.sh"
+
+# 2. BUILDING-CONFIG-NOTES
+#    Notes taken when this app was first build. Information only.
+
+# 3. BUILDING-SIGNING
+#    How to set up signing the APK.
+
+# 4. BUILDING-UPDATES
+#    Describes how to upgrade the external packages which is a complex task.
+#    To be honest: it's terrible... I hope to clean it up one day.
+#    It's a living doc, and may/will contain errors!
+
+# ############################################################################
+# Windows only - Use Powershell to set up a WSL Debian environment.
+# ############################################################################
+#   wsl --install Debian
+#   wsl -d Debian
+
+# ############################################################################
+# Debian environment prerequisites
+# ############################################################################
+
+# Bring Debian up-to-date if needed.
+sudo apt update && sudo apt upgrade -y
+
+# Install Java 21
+sudo apt install -y openjdk-21-jdk-headless
+
+# Install build-essential: glibc headers + tools for the NDK,
+# unzip/wget for the SDK tools and gawk/awk for rsync building
+sudo apt install -y build-essential wget unzip git gawk
+
+# ############################################################################
+# Fedora environment prerequisites
+# ############################################################################
+
+sudo dnf upgrade --refresh -y
+
+# Fedora 44 only provides java 25.
+sudo dnf install -y java-25-openjdk-devel
+
+sudo dnf install -y @development-tools wget unzip git gawk
+
+# ############################################################################
+# Android SDK installation
+# ############################################################################
+
+# choose/create a location
+export ANDROID_HOME=$HOME/android-sdk
+mkdir -p $ANDROID_HOME/cmdline-tools
+cd $ANDROID_HOME/cmdline-tools
+
+# Check the url and get the latest version. Below version was current on 2026-05-14.
+# When updating, make sure to re-link "latest"
+# https://developer.android.com/studio#command-line-tools-only
+wget https://dl.google.com/android/repository/commandlinetools-linux-14742923_latest.zip
+unzip commandlinetools-linux-14742923_latest.zip
+rm commandlinetools-linux-14742923_latest.zip
+mv cmdline-tools 20.0
+ln -s 20.0 latest
+cd ~
+
+# Add to the path. You may want to add these to your permanent environment.
+export PATH=$ANDROID_HOME/cmdline-tools/latest/bin:$ANDROID_HOME/platform-tools:$PATH
+
+# Accept the licence
+yes | $ANDROID_HOME/cmdline-tools/latest/bin/sdkmanager --licenses
+
+# ############################################################################
+# Helper binaries for the remote-access tools (optional but recommended)
+# ############################################################################
+#
+# The app can ship the official frpc, tailscale(d) and nezha-agent binaries
+# inside the APK as native libraries ("lib<name>.so" in
+# app/src/main/jniLibs/<abi>/), which is the only location from which
+# Android 10+ allows an app to execute files.
+#
+# Run this BEFORE the Gradle build ("build.sh", "./gradlew assembleDebug" or
+# "./gradlew assembleRelease"); see "tools/fetch-go-binaries.sh --help":
+#
+#     tools/fetch-go-binaries.sh armeabi-v7a arm64-v8a x86_64
+#
+# Notes:
+# - the script's default ABI is arm64-v8a (the only one usable on real
+#   devices); the debug variant builds x86_64 + x86. frp v0.65.0 has no
+#   32-bit x86 build, so libfrpc.so is skipped for the x86 ABI.
+# - app/src/main/jniLibs/ is .gitignore'd: the binaries are NOT in the repo.
+# - skipping this step still produces a working APK. The missing binaries can
+#   then be downloaded or imported at runtime from the app's
+#   "Remote & monitoring" (远程与监控) screen; imported binaries need root
+#   to execute.
+# - "build.sh" does not call this script (yet); it may be extended to do so.
+tools/fetch-go-binaries.sh armeabi-v7a arm64-v8a x86_64

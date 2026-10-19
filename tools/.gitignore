@@ -1,0 +1,4 @@
+# tools/auto-commit.sh 的运行时文件(模式相对本目录)
+/.auto-commit.log
+/.auto-commit.pid
+/.auto-commit.stop

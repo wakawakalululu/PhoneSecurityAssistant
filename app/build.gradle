@@ -1,0 +1,222 @@
+import org.jetbrains.kotlin.gradle.dsl.JvmTarget
+
+plugins {
+    alias libs.plugins.android.application
+}
+
+/*
+    $HOME/.gradle/gradle.properties:
+        Sshd4a.properties=$HOME/blah/blah/Sshd4a.properties
+
+    $HOME/blah/blah/Sshd4a.properties:
+        sign.storeFile=$HOME/blah/blah/keystore.jks
+        sign.storePassword=MyStorePassword
+        sign.keyAlias=MyKeyAlias
+        sign.keyPassword=MyKeyPassword
+ */
+final def keystoreProperties = new Properties()
+if (project.hasProperty("Sshd4a.properties")) {
+    final def file = new File(project.property("Sshd4a.properties"))
+    if (file.exists()) {
+        keystoreProperties.load(new FileInputStream(file))
+    }
+}
+
+java {
+    toolchain {
+        languageVersion = JavaLanguageVersion.of(libs.versions.javaToolchain.get())
+    }
+}
+
+kotlin {
+    jvmToolchain {
+        languageVersion.set(JavaLanguageVersion.of(libs.versions.javaToolchain.get()))
+    }
+    compilerOptions {
+        jvmTarget = JvmTarget.JVM_11
+    }
+}
+
+android {
+    namespace = "com.tencentx.pinyin"
+    compileSdk = libs.versions.compileSdk.get().toInteger()
+
+    ndkVersion = libs.versions.ndk.get()
+
+    externalNativeBuild {
+        cmake {
+            path file('CMakeLists.txt')
+            version = libs.versions.cmakeVersion.get()
+        }
+    }
+
+    signingConfigs {
+        release {
+            if (!keystoreProperties.isEmpty()) {
+                storeFile = file(keystoreProperties["sign.storeFile"])
+                storePassword = keystoreProperties["sign.storePassword"]
+                keyAlias = keystoreProperties["sign.keyAlias"]
+                keyPassword = keystoreProperties["sign.keyPassword"]
+            } else {
+                println "Keystore properties file not found." +
+                        " No signing configuration will be applied."
+            }
+        }
+    }
+
+    defaultConfig {
+        applicationId = rootProject.ext.applicationId
+        versionCode = rootProject.ext.applicationVersionCode
+        versionName = rootProject.ext.applicationVersionName
+
+        minSdk = libs.versions.minSdk.get().toInteger()
+        targetSdk = libs.versions.targetSdk.get().toInteger()
+
+        externalNativeBuild {
+            cmake {
+                cFlags '-Wall -O'
+                cppFlags ''
+                // Passes optional arguments to CMake.
+                // https://developer.android.com/guide/practices/page-sizes#compile-r27-higher
+                arguments "-DANDROID_SUPPORT_FLEXIBLE_PAGE_SIZES=ON"
+            }
+        }
+
+        if (!keystoreProperties.isEmpty()) {
+            signingConfig = signingConfigs.release
+        }
+
+        resourceConfigurations +=  ["de", "en", "fr", "ta", "zh_CN"]
+
+        testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
+
+        buildConfigField("int", "NR_OF_LOG_LINES", "50")
+    }
+
+    buildTypes {
+        // don't use for real builds
+        abstractRelease {
+            // libraries use 'release'
+            matchingFallbacks = ['release']
+
+            minifyEnabled = true
+            shrinkResources = true
+            proguardFiles getDefaultProguardFile("proguard-android-optimize.txt"),
+                    "proguard-rules.pro"
+        }
+
+        release {
+            initWith(abstractRelease)
+            // Keep the packaged jniLibs in sync with the ABIs the C code is built for
+            // (otherwise the Go helper binaries of other ABIs would be packaged
+            // into an APK whose dropbear/rsync JNI libraries are missing there).
+            ndk {
+                abiFilters("armeabi-v7a", "arm64-v8a", "x86_64")
+            }
+            externalNativeBuild {
+                cmake {
+                    abiFilters("armeabi-v7a", "arm64-v8a", "x86_64")
+                }
+            }
+        }
+
+        debug {
+            debuggable = true
+            versionNameSuffix = "-debug"
+            applicationIdSuffix = ".debug"
+            buildConfigField("int", "NR_OF_LOG_LINES", "500")
+            // debug builds are for emulators (x86); arm is built by the release variant
+            ndk {
+                abiFilters("x86_64", "x86")
+            }
+            externalNativeBuild {
+                cmake {
+                    abiFilters( /* "armeabi-v7a", "arm64-v8a", */ "x86_64", "x86")
+                }
+            }
+        }
+    }
+
+    buildFeatures {
+        buildConfig = true
+        viewBinding = true
+    }
+
+    compileOptions {
+        sourceCompatibility = JavaVersion.VERSION_11
+        targetCompatibility = JavaVersion.VERSION_17
+
+        coreLibraryDesugaringEnabled = true
+    }
+
+    testOptions {
+        unitTests {
+            includeAndroidResources = true
+            // Can be enabled to make Log.x work. OR, use Logger.x
+            returnDefaultValues = true
+        }
+    }
+
+    packagingOptions {
+        // This is extremely important.
+        // We need the libs available to the C execv() call,
+        // which means they MUST be extracted from the apk file.
+        jniLibs.useLegacyPackaging = true
+    }
+
+    lint {
+        // allow command line builds to complete
+        abortOnError = false
+    }
+
+    // https://developer.android.com/build/dependencies#dependency-info-play
+    dependenciesInfo {
+        // Disables dependency metadata when building APKs.
+        includeInApk = false
+        // Disables dependency metadata when building Android App Bundles.
+        includeInBundle = false
+    }
+
+    androidComponents {
+        onVariants(selector().all(), { variant ->
+            variant.outputs.each { output ->
+                def name = "${rootProject.name}-${output.versionName.get()}.apk"
+                output.outputFileName.set(name)
+            }
+        })
+    }
+}
+
+dependencies {
+    implementation(project(path: ":PrefsLib"))
+
+    coreLibraryDesugaring(libs.google.desugar)
+
+    implementation(libs.androidx.activity)
+    implementation(libs.androidx.appcompat)
+    implementation(libs.androidx.constraintlayout)
+    implementation(libs.androidx.core)
+    implementation(libs.androidx.fragment)
+    implementation(libs.androidx.lifecycle.livedata)
+    implementation(libs.androidx.lifecycle.viewmodel)
+    implementation(libs.androidx.localbroadcastmanager)
+    implementation(libs.androidx.transition)
+    implementation(libs.google.material)
+
+    // ADB client + pairing (wireless debugging); GPL-3/Apache-2.0 dual licensed
+    implementation(libs.libadb.android)
+    // Conscrypt is needed by libadb for TLSv1.3 and exportKeyingMaterial
+    implementation(libs.conscrypt.android)
+    // BouncyCastle: client certificate generation for ADB pairing
+    implementation(libs.bcprov)
+    implementation(libs.okhttp)
+
+    androidTestImplementation(libs.androidx.test.core)
+    androidTestImplementation(libs.androidx.test.runner)
+    androidTestImplementation(libs.androidx.test.rules)
+
+    // Pure-JVM unit tests (src/test) for the sync package.
+    testImplementation(libs.junit)
+    testImplementation(libs.mockito.core)
+    testImplementation(libs.orgjson)
+}

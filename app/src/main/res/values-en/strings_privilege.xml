@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--suppress LongLine -->
+<resources>
+    <!-- Privilege mode: run as the app itself. -->
+    <string name="pe_mode_app">App privileges (normal)</string>
+    <!-- Privilege mode: run as root through "su". -->
+    <string name="pe_mode_root">Root privileges (su)</string>
+    <!-- Privilege mode: run through an ADB (wireless debugging) connection. -->
+    <string name="pe_mode_adb">ADB privileges (wireless debugging)</string>
+</resources>

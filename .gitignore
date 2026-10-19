@@ -1,0 +1,38 @@
+*.iml
+.DS_Store
+.cxx
+.externalNativeBuild
+.gradle
+/.idea/AndroidProjectSystem.xml
+/.idea/androidTestResultsUserPreferences.xml
+/.idea/assetWizardSettings.xml
+/.idea/caches
+/.idea/checkstyle-idea.xml
+/.idea/codeStyles/Project.xml
+/.idea/codeStyles/codeStyleConfig.xml
+/.idea/deploymentTargetDropDown.xml
+/.idea/deploymentTargetSelector.xml
+/.idea/deviceManager.xml
+/.idea/inspectionProfiles/Project_Default.xml
+/.idea/libraries
+/.idea/modules.xml
+/.idea/navEditor.xml
+/.idea/other.xml
+/.idea/runConfigurations.xml
+/.idea/workspace.xml
+/build
+/captures
+/local.properties
+local.properties
+
+# Helper binaries fetched by tools/fetch-go-binaries.sh; large and not committed.
+/app/src/main/jniLibs/
+
+# JVM crash artifacts / heap dumps (can be GB-sized)
+*.hprof
+*.hprof.*
+hs_err_pid*.log
+replay_pid*.log
+
+# migration/distribution archives (source tarballs, bundles, APK copies)
+/dist/

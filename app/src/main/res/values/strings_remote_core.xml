@@ -1,0 +1,80 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--suppress LongLine -->
+<resources>
+    <!-- Preference/section label: name of the frp client tool. -->
+    <string name="remote_tool_frp">frpc 内网穿透</string>
+    <!-- Preference/section label: name of the Tailscale tool. Do NOT translate "Tailscale". -->
+    <string name="remote_tool_tailscale">Tailscale 组网</string>
+    <!-- Preference/section label: name of the Nezha monitoring agent. Do NOT translate "Nezha". -->
+    <string name="remote_tool_nezha">哪吒监控上报</string>
+
+    <!-- Name of the background service. -->
+     <string name="remote_service_name">春夏秋手机安全助手 远程与监控</string>
+    <!-- Service description needed for Android OS. -->
+    <string name="remote_service_description">在后台运行 frpc 内网穿透、Tailscale 组网和哪吒监控 Agent。</string>
+    <!-- Notification text while tools are starting. -->
+    <string name="remote_notification_starting">正在启动…</string>
+    <!-- Notification text while tools are running.
+         Param 1: comma separated list of running tools. -->
+    <string name="remote_notification_running">正在运行：%1$s</string>
+    <!-- Error message written to the tool its log.
+         Param 1: tool name, Param 2: error message. -->
+    <string name="err_remote_start_failed">%1$s 启动失败：%2$s</string>
+
+    <!-- Screen title. -->
+    <string name="remote_screen_title">远程与监控</string>
+    <!-- Information text on the remote access screen. -->
+    <string name="remote_hint">这些工具作为前台服务在后台持续运行，关闭应用后仍会保持运行；可在系统通知中查看状态。</string>
+    <!-- Tool state. -->
+    <string name="remote_status_running">运行中</string>
+    <!-- Tool state. -->
+    <string name="remote_status_stopped">未运行</string>
+    <!-- Tool state chip: nothing has been configured for this tool yet. -->
+    <string name="rc_state_not_configured">未配置</string>
+    <!-- Button: show the log of a tool. -->
+    <string name="remote_btn_log">日志</string>
+    <!-- Button: install the binary of a tool. -->
+    <string name="remote_btn_install">安装</string>
+    <!-- Dialog option: import a binary from a file. -->
+    <string name="remote_btn_import">从文件导入</string>
+    <!-- Dialog option: download the official binary. -->
+    <string name="remote_btn_download">在线下载</string>
+    <!-- Button: stop all tools. -->
+    <string name="remote_all_stop">全部停止</string>
+    <!-- Global state on the remote access screen.
+         Param 1: number of running tools. -->
+    <string name="remote_running_count_fmt">运行中的工具：%1$d 个</string>
+    <!-- Dialog title of the log viewer.
+         Param 1: tool name. -->
+    <string name="remote_log_title_fmt">日志：%1$s</string>
+    <!-- Placeholder when a log is empty. -->
+    <string name="remote_log_empty">（暂无日志）</string>
+    <!-- Button: clear the log. -->
+    <string name="remote_btn_clear_log">清空日志</string>
+    <!-- Dialog message while downloading.
+         Param 1: binary names. -->
+    <string name="remote_download_progress_fmt">正在下载 %1$s …</string>
+    <!-- Download finished.
+         Param 1: binary names. -->
+    <string name="remote_download_ok_fmt">%1$s 下载完成</string>
+    <!-- Download failed.
+         Param 1: error message. -->
+    <string name="remote_download_failed_fmt">下载失败：%1$s</string>
+    <!-- Download not possible for this cpu architecture.
+         Param 1: ABI name. -->
+    <string name="remote_download_unsupported_abi">当前架构（%1$s）不支持在线下载，请手动导入二进制文件</string>
+    <!-- Import finished.
+         Param 1: binary name. -->
+    <string name="remote_import_ok_fmt">导入完成：%1$s</string>
+    <!-- Import failed.
+         Param 1: error message. -->
+    <string name="remote_import_failed_fmt">导入失败：%1$s</string>
+    <!-- Warning: imported binaries are not in the native library directory. -->
+    <string name="remote_import_root_hint">导入的二进制只能以 Root 权限执行</string>
+    <!-- Button: bring tailscale up. -->
+    <string name="remote_ts_up">连接</string>
+    <!-- Button: show tailscale status. -->
+    <string name="remote_ts_status">状态</string>
+    <!-- Button: bring tailscale down. -->
+    <string name="remote_ts_down">断开</string>
+</resources>

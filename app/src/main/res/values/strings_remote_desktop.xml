@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--suppress LongLine -->
+<resources>
+    <!-- Menu option / screen title: remote desktop. -->
+    <string name="ui_remote_desktop">远程桌面</string>
+    <!-- Screen title. -->
+    <string name="rd_screen_title">远程桌面</string>
+    <!-- Information text on the remote desktop screen. -->
+    <string name="rd_hint">通过 MediaProjection 捕获屏幕画面，以 MJPEG 方式通过 HTTP 流式传输。在浏览器中打开显示地址即可实时查看并远程操控设备。配合 frpc / Tailscale 可从外网访问。</string>
+
+    <!-- Name of the background service. -->
+    <string name="rd_service_name">春夏秋手机安全助手 远程桌面</string>
+    <!-- Service description needed for Android OS. -->
+    <string name="rd_service_description">捕获屏幕画面并通过 HTTP 流式传输。</string>
+    <!-- Notification text while starting. -->
+    <string name="rd_notification_starting">正在启动远程桌面…</string>
+    <!-- Notification text while running.
+         Param 1: port number. -->
+    <string name="rd_notification_running_fmt">远程桌面运行中，端口 %1$s</string>
+
+    <!-- Task state: idle. -->
+    <string name="rd_status_idle">空闲</string>
+    <!-- Task state: running. -->
+    <string name="rd_status_running">运行中</string>
+    <!-- Button: start. -->
+    <string name="rd_btn_start">开始共享</string>
+    <!-- Button: stop. -->
+    <string name="rd_btn_stop">停止共享</string>
+    <!-- Port input hint. -->
+    <string name="rd_port">HTTP 端口（默认 8888）</string>
+    <!-- Connection URL.
+         Param 1: port number. -->
+    <string name="rd_url_fmt">浏览器访问：http://&lt;设备IP&gt;:%1$s\n或通过 Tailscale / frpc 映射后从外网访问</string>
+
+    <!-- Accessibility section header. -->
+    <string name="rd_accessibility_section">远程操控设置</string>
+    <!-- Accessibility enabled. -->
+    <string name="rd_accessibility_enabled">无障碍服务已启用，可远程操控</string>
+    <!-- Accessibility disabled. -->
+    <string name="rd_accessibility_disabled">无障碍服务未启用，无法远程操控。请在系统设置中开启「春夏秋手机安全助手 远程桌面」无障碍服务。</string>
+    <!-- Button: open accessibility settings. -->
+    <string name="rd_btn_accessibility">打开无障碍设置</string>
+    <!-- Accessibility service description (shown in system settings). -->
+    <string name="rd_accessibility_description">允许远程用户通过 春夏秋手机安全助手 远程桌面点击、滑动操控此设备。</string>
+
+    <!-- Error: MediaProjection not available. -->
+    <string name="rd_error_no_projection">无法获取屏幕捕获权限</string>
+</resources>

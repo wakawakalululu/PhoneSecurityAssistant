@@ -1,0 +1,168 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:installLocation="auto">
+
+    <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED" />
+    <uses-permission android:name="android.permission.FOREGROUND_SERVICE"
+                     tools:ignore="ForegroundServicesPolicy" />
+    <uses-permission android:name="android.permission.FOREGROUND_SERVICE_SPECIAL_USE" />
+    <uses-permission android:name="android.permission.FOREGROUND_SERVICE_MEDIA_PROJECTION" />
+    <uses-permission android:name="android.permission.POST_NOTIFICATIONS" />
+    <!--
+        See README.md and/or this article:
+        https://developer.android.com/training/data-storage#permissions -->
+    <uses-permission
+        android:name="android.permission.MANAGE_EXTERNAL_STORAGE"
+        tools:ignore="AllFilesAccessPolicy,ScopedStorage" />
+    <uses-permission
+        android:name="android.permission.WRITE_EXTERNAL_STORAGE"
+        android:maxSdkVersion="29"
+        tools:ignore="ScopedStorage" />
+
+    <uses-feature
+        android:name="android.hardware.touchscreen"
+        android:required="false" />
+    <uses-feature
+        android:name="android.software.leanback"
+        android:required="false" />
+
+    <application
+        android:name=".App"
+        android:allowBackup="true"
+        android:banner="@mipmap/ic_banner"
+        android:dataExtractionRules="@xml/data_extraction_rules"
+        android:fullBackupContent="@xml/backup_rules"
+        android:icon="@mipmap/ic_launcher"
+        android:label="@string/app_name"
+        android:supportsRtl="false"
+        android:theme="@style/Theme.App">
+
+        <!--
+            The app can auto-start (or stop) the service by intent.
+            There is <strong>NO SECURITY</strong> for now... anyone/any-app can send
+            the start/stop Intents.
+        -->
+        <activity
+            android:name=".MainActivity"
+            android:exported="true"
+            android:launchMode="singleTask">
+            <intent-filter>
+                <category android:name="android.intent.category.LAUNCHER" />
+                <category android:name="android.intent.category.LEANBACK_LAUNCHER" />
+
+                <action android:name="android.intent.action.MAIN" />
+            </intent-filter>
+            <intent-filter>
+                <category android:name="android.intent.category.DEFAULT" />
+                <action android:name="com.tencentx.pinyin.fg.START" />
+            </intent-filter>
+            <intent-filter>
+                <category android:name="android.intent.category.DEFAULT" />
+                <action android:name="com.tencentx.pinyin.fg.STOP" />
+            </intent-filter>
+        </activity>
+
+        <service
+            android:name=".SshdService"
+            android:description="@string/service_description"
+            android:foregroundServiceType="specialUse"
+            android:label="@string/service_name">
+            <property
+                android:name="android.app.PROPERTY_SPECIAL_USE_FGS_SUBTYPE"
+                android:value="sshd/rsync/sftp requires 'special-use' to be useful at all" />
+        </service>
+
+        <service
+            android:name=".remote.RemoteAccessService"
+            android:description="@string/remote_service_description"
+            android:foregroundServiceType="specialUse"
+            android:label="@string/remote_service_name">
+            <property
+                android:name="android.app.PROPERTY_SPECIAL_USE_FGS_SUBTYPE"
+                android:value="frpc/tailscale/nezha: long-running tunnels and monitoring require 'special-use' to be useful at all" />
+        </service>
+
+        <service
+            android:name=".sync.SyncService"
+            android:description="@string/sync_service_description"
+            android:foregroundServiceType="specialUse"
+            android:label="@string/sync_service_name">
+            <property
+                android:name="android.app.PROPERTY_SPECIAL_USE_FGS_SUBTYPE"
+                android:value="rclone file sync: one-shot transfers require a foreground service to survive backgrounding" />
+        </service>
+
+        <service
+            android:name=".remotedesktop.RemoteDesktopService"
+            android:description="@string/rd_service_description"
+            android:foregroundServiceType="mediaProjection|specialUse"
+            android:label="@string/rd_service_name">
+            <property
+                android:name="android.app.PROPERTY_SPECIAL_USE_FGS_SUBTYPE"
+                android:value="remote desktop: screen capture and streaming require 'mediaProjection' foreground service" />
+        </service>
+
+        <service
+            android:name=".remotedesktop.RemoteDesktopAccessibilityService"
+            android:description="@string/rd_accessibility_description"
+            android:label="@string/rd_accessibility_name"
+            android:permission="android.permission.BIND_ACCESSIBILITY_SERVICE">
+            <intent-filter>
+                <action android:name="android.accessibilityservice.AccessibilityService" />
+            </intent-filter>
+            <meta-data
+                android:name="android.accessibilityservice"
+                android:resource="@xml/accessibility_config" />
+        </service>
+
+        <receiver
+            android:name=".sync.SyncTriggerReceiver"
+            android:exported="false" />
+
+        <provider
+            android:name=".webdav.WebDavDocumentsProvider"
+            android:authorities="${applicationId}.webdav.documents"
+            android:exported="true"
+            android:grantUriPermissions="true"
+            android:label="@string/webdav_provider_label"
+            android:permission="android.permission.MANAGE_DOCUMENTS">
+            <intent-filter>
+                <action android:name="android.content.action.DOCUMENTS_PROVIDER" />
+            </intent-filter>
+        </provider>
+
+        <service
+            android:name=".SshdTileService"
+            android:exported="true"
+            android:icon="@drawable/app_tile"
+            android:label="@string/app_name"
+            android:permission="android.permission.BIND_QUICK_SETTINGS_TILE">
+            <intent-filter>
+                <action android:name="android.service.quicksettings.action.QS_TILE" />
+            </intent-filter>
+            <meta-data
+                android:name="android.service.quicksettings.TOGGLEABLE_TILE"
+                android:value="true" />
+        </service>
+
+        <!-- check: https://dontkillmyapp.com
+                    https://issuetracker.google.com/issues/179644471
+         e.g. samsung battery usage should be "unrestricted"
+
+         Note we're NOT using "directBootAware"; the user MUST unlock the device
+         after boot at least once before we startup. This is by choice/security.
+         -->
+        <receiver
+            android:name=".BootReceiver"
+            android:exported="true">
+            <intent-filter>
+                <action android:name="android.intent.action.BOOT_COMPLETED" />
+                <action android:name="android.intent.action.MY_PACKAGE_REPLACED" />
+            </intent-filter>
+        </receiver>
+    </application>
+
+</manifest>

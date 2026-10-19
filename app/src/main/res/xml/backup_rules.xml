@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="utf-8"?>
+<full-backup-content>
+    <!-- Preferences contain remote-service credentials; tools contain generated
+         configs, downloaded binaries and Tailscale state; sync contains task
+         definitions with remote credentials and per-task rclone configs/logs. -->
+    <exclude
+        domain="sharedpref"
+        path="." />
+    <exclude
+        domain="file"
+        path="./tools" />
+    <exclude
+        domain="file"
+        path="./sync" />
+    <exclude
+        domain="file"
+        path="./adb" />
+    <exclude
+        domain="file"
+        path="./dropbear/dropbear.pid" />
+    <exclude
+        domain="file"
+        path="./dropbear/dropbear.err" />
+    <exclude
+        domain="file"
+        path="./dropbear/dropbear.err.old" />
+
+    <exclude
+        domain="file"
+        path="./dropbear/master_password" />
+    <exclude
+        domain="file"
+        path="./dropbear/authorized_keys" />
+</full-backup-content>
