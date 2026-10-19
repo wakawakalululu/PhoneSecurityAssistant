@@ -111,7 +111,9 @@ env:
 jobs:
   build:
     name: Build debug + release APKs
-    runs-on: ubuntu-latest
+    # Pinned: ubuntu-latest migrates to Ubuntu 26 on 2026-10-19 (queue backlog +
+    # risk of changed preinstalled SDK layout). 24.04 keeps the known image.
+    runs-on: ubuntu-24.04
     timeout-minutes: 60
 
     steps:
@@ -132,7 +134,7 @@ jobs:
           # wrapper itself; an unknown wrapper-jar checksum must not fail the run.
           validate-wrappers: false
 
-      - name: Set up Android SDK (pre-installed on ubuntu-latest)
+      - name: Set up Android SDK (pre-installed on ubuntu runners)
         run: |
           # The Android SDK is pre-installed on GitHub Actions ubuntu runners
           # at $ANDROID_HOME (/usr/local/lib/android/sdk).  We just ensure
@@ -318,7 +320,7 @@ jobs:
     name: Publish GitHub Release
     needs: build
     if: startsWith(github.ref, 'refs/tags/v')
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-24.04
     timeout-minutes: 15
     permissions:
       contents: write
