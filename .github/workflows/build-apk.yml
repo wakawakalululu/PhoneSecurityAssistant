@@ -262,7 +262,35 @@ jobs:
           else
             echo "::warning::No signing configuration - building the release APK UNSIGNED."
           fi
-          ./gradlew "${args[@]}"
+          # Capture output for error extraction; tee preserves console output.
+          set +e
+          ./gradlew "${args[@]}" 2>&1 | tee /tmp/gradle-output.log
+          gradle_exit=${PIPESTATUS[0]}
+          set -e
+          if [ "${gradle_exit}" -ne 0 ]; then
+            # Extract the "What went wrong" section and emit as annotations.
+            python3 -c "
+import sys
+lines = open('/tmp/gradle-output.log', errors='replace').read().split('\n')
+emitted = 0
+for i, line in enumerate(lines):
+    if any(kw in line for kw in ['What went wrong', 'FAILURE:']):
+        for j in range(i, min(i+30, len(lines))):
+            msg = lines[j].strip()[:250]
+            if msg:
+                print(f'::error::{msg}')
+                emitted += 1
+            if emitted > 20:
+                break
+        break
+if emitted == 0:
+    # Fallback: last 20 non-blank lines
+    tail = [l.strip() for l in lines if l.strip()][-20:]
+    for l in tail:
+        print(f'::error::{l[:250]}')
+" || true
+            exit "${gradle_exit}"
+          fi
 
       - name: Show APK outputs
         run: find app/build/outputs/apk -type f -name '*.apk' -exec ls -l {} + -exec sha256sum {} +
