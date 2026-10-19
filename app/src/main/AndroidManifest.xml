@@ -108,6 +108,7 @@
         <service
             android:name=".remotedesktop.RemoteDesktopAccessibilityService"
             android:description="@string/rd_accessibility_description"
+            android:exported="false"
             android:label="@string/rd_accessibility_name"
             android:permission="android.permission.BIND_ACCESSIBILITY_SERVICE">
             <intent-filter>
