@@ -270,22 +270,11 @@ jobs:
           gradle_exit=${PIPESTATUS[0]}
           set -e
           if [ "${gradle_exit}" -ne 0 ]; then
-            # Extract clang/ninja errors (native build failures)
-            grep -n "error:\|fatal error:\|In file included from\|FAILED:" /tmp/gradle-output.log | head -30 | while IFS= read -r line; do
-              msg="$(echo "$line" | sed 's/^ *//' | cut -c1-250')"
+            # Dump last 50 lines of Gradle output as annotations for debugging
+            tail -50 /tmp/gradle-output.log | while IFS= read -r line; do
+              msg="$(echo "$line" | cut -c1-250)"
               [ -n "$msg" ] && echo "::error::${msg}"
             done || true
-            # Extract the "What went wrong" section and emit as annotations.
-            grep -A30 -i "What went wrong\|FAILURE:" /tmp/gradle-output.log | head -30 | while IFS= read -r line; do
-              msg="$(echo "$line" | sed 's/^ *//' | cut -c1-250)"
-              [ -n "$msg" ] && echo "::error::${msg}"
-            done || true
-            if ! grep -qi "What went wrong\|FAILURE:\|error:" /tmp/gradle-output.log; then
-              tail -20 /tmp/gradle-output.log | while IFS= read -r line; do
-                msg="$(echo "$line" | sed 's/^ *//' | cut -c1-250)"
-                [ -n "$msg" ] && echo "::error::${msg}"
-              done || true
-            fi
             exit "${gradle_exit}"
           fi
 
