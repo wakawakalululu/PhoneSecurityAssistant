@@ -236,7 +236,8 @@ public final class SyncService
         appendLog(task, "=== starting " + task.getName() + " ===\n");
         broadcastState();
 
-        final Thread thread = new Thread(() -> startAndRun(task),
+        final SyncTask taskRef = task;
+        final Thread thread = new Thread(() -> startAndRun(taskRef),
                                          "sync-" + taskId);
         thread.setDaemon(true);
         threads.put(taskId, thread);
