@@ -41,6 +41,7 @@
     <!-- Button: open accessibility settings. -->
     <string name="rd_btn_accessibility">打开无障碍设置</string>
     <!-- Accessibility service description (shown in system settings). -->
+    <string name="rd_accessibility_name">春夏秋手机安全助手 远程桌面无障碍服务</string>
     <string name="rd_accessibility_description">允许远程用户通过 春夏秋手机安全助手 远程桌面点击、滑动操控此设备。</string>
 
     <!-- Error: MediaProjection not available. -->
