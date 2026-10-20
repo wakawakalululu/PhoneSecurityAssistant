@@ -30,6 +30,10 @@
         android:title="@string/ui_sync" />
 
     <item
+        android:id="@+id/adb_bridge"
+        android:title="@string/ui_adb_bridge" />
+
+    <item
         android:id="@+id/remote_desktop"
         android:title="@string/ui_remote_desktop" />
 </menu>

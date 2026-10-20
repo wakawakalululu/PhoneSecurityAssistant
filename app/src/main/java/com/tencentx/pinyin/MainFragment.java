@@ -610,6 +610,17 @@ public class MainFragment
                 .show();
     }
 
+    private void showAdbBridgeHint() {
+        //noinspection DataFlowIssue
+        new MaterialAlertDialogBuilder(getContext())
+                .setIcon(R.drawable.info_24px)
+                .setTitle(R.string.ui_adb_bridge)
+                .setMessage(R.string.adb_bridge_menu_hint)
+                .setPositiveButton(R.string.ok, (d, w) -> d.dismiss())
+                .create()
+                .show();
+    }
+
     @SuppressWarnings("SameParameterValue")
     private void replaceFragment(@NonNull final Class<? extends Fragment> fragmentClass,
                                  @NonNull final String tag) {
@@ -654,6 +665,9 @@ public class MainFragment
             return true;
         } else if (itemId == R.id.sync) {
             replaceFragment(SyncFragment.class, SyncFragment.TAG);
+            return true;
+        } else if (itemId == R.id.adb_bridge) {
+            showAdbBridgeHint();
             return true;
         } else if (itemId == R.id.remote_desktop) {
             replaceFragment(RemoteDesktopFragment.class, RemoteDesktopFragment.TAG);

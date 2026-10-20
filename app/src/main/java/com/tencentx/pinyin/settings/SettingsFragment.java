@@ -388,6 +388,24 @@ public class SettingsFragment
         factory.action("download_rclone", R.string.st_download_rclone,
                        this::onDownloadRclone, null);
 
+        factory.header(R.string.st_pc_adb_bridge);
+        factory.bool(Prefs.ADB_BRIDGE_ENABLED,
+                     R.string.st_pt_adb_bridge_enabled,
+                     null, null);
+        factory.text(Prefs.ADB_BRIDGE_PORT,
+                     R.string.st_pt_adb_bridge_port,
+                     null, p -> {
+                 p.setInputType(InputType.TYPE_CLASS_NUMBER);
+                 p.setValue(String.valueOf(Prefs.ADB_BRIDGE_DEFAULT_PORT));
+             });
+        factory.singleChoice(Prefs.ADB_BRIDGE_POLICY_MODE,
+                             R.string.st_pt_adb_bridge_policy_mode,
+                             R.array.adb_bridge_policy_entries,
+                             R.array.adb_bridge_policy_values,
+                             null, p -> {
+                         p.setSelectedIndex(0);
+                     });
+
         factory.header(R.string.st_pc_remote);
         factory.bool(Prefs.REMOTE_START_WITH_SSHD,
                      R.string.st_pt_remote_start_with_sshd,

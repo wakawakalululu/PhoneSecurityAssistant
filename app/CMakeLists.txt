@@ -870,6 +870,10 @@ target_include_directories(libsftp-server.so PRIVATE
         ${BASE_SRC_SFTP_SERVER}/openbsd-compat/include
         ${BASE_SRC_SFTP_SERVER}/openbsd-compat
         )
+# defines.h:595 defines an empty __sentinel__ macro when HAVE_ATTRIBUTE__SENTINEL__
+# is unset, which corrupts Bionic unistd.h's __attribute__((__sentinel__(1))).
+# NDK clang supports sentinel; define it so the empty macro is not emitted.
+target_compile_definitions(libsftp-server.so PRIVATE HAVE_ATTRIBUTE__SENTINEL__)
 
 # #############################################################################
 # build rsync executable

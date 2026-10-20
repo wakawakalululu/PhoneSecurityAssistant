@@ -79,6 +79,19 @@ public final class Prefs {
     static final String ADB_PORT = "adb.port";
     static final int ADB_DEFAULT_PORT = 5555;
 
+    /** boolean. Remote ADB command bridge master switch (default off). */
+    static final String ADB_BRIDGE_ENABLED = "adb.bridge.enabled";
+    /** String. Port for the bridge sshd. */
+    static final String ADB_BRIDGE_PORT = "adb.bridge.port";
+    static final int ADB_BRIDGE_DEFAULT_PORT = 2223;
+    /** String. Policy mode: ALLOWLIST / DENYLIST / OPEN. */
+    static final String ADB_BRIDGE_POLICY_MODE = "adb.bridge.policy.mode";
+    static final String ADB_BRIDGE_DEFAULT_POLICY_MODE = "ALLOWLIST";
+    /** String. Newline-separated allowlist command prefixes. */
+    static final String ADB_BRIDGE_ALLOWLIST = "adb.bridge.allowlist";
+    /** String. Newline-separated denylist command prefixes. */
+    static final String ADB_BRIDGE_DENYLIST = "adb.bridge.denylist";
+
     /** boolean. Start the remote access tools together with the sshd service. */
     static final String REMOTE_START_WITH_SSHD = "remote.start.with.sshd";
 
@@ -508,6 +521,77 @@ public final class Prefs {
                 .putString(ADB_HOST, host.strip())
                 .putString(ADB_PORT, String.valueOf(port))
                 .apply();
+    }
+
+    /**
+     * Whether the remote ADB command bridge is enabled.
+     *
+     * @param prefs to read from
+     *
+     * @return flag; defaults to {@code false}
+     */
+    public static boolean isAdbBridgeEnabled(@NonNull final SharedPreferences prefs) {
+        return prefs.getBoolean(ADB_BRIDGE_ENABLED, false);
+    }
+
+    /**
+     * The port the bridge sshd listens on.
+     *
+     * @param prefs to read from
+     *
+     * @return port; defaults to {@link #ADB_BRIDGE_DEFAULT_PORT}
+     */
+    public static int getAdbBridgePort(@NonNull final SharedPreferences prefs) {
+        final String ps = prefs.getString(ADB_BRIDGE_PORT, null);
+        if (ps != null && !ps.isBlank()) {
+            //noinspection OverlyBroadCatchBlock
+            try {
+                return Integer.parseInt(ps.strip());
+            } catch (@NonNull final Exception ignore) {
+                // ignore
+            }
+        }
+        return ADB_BRIDGE_DEFAULT_PORT;
+    }
+
+    /**
+     * The command policy mode for the bridge.
+     *
+     * @param prefs to read from
+     *
+     * @return mode value; defaults to {@link #ADB_BRIDGE_DEFAULT_POLICY_MODE}
+     */
+    @NonNull
+    public static String getAdbBridgePolicyMode(@NonNull final SharedPreferences prefs) {
+        final String m = prefs.getString(ADB_BRIDGE_POLICY_MODE, null);
+        if (m == null || m.isBlank()) {
+            return ADB_BRIDGE_DEFAULT_POLICY_MODE;
+        }
+        return m.strip();
+    }
+
+    /**
+     * The newline-separated allowlist command prefixes.
+     *
+     * @param prefs to read from
+     *
+     * @return the raw list; defaults to an empty String
+     */
+    @NonNull
+    public static String getAdbBridgeAllowlist(@NonNull final SharedPreferences prefs) {
+        return prefs.getString(ADB_BRIDGE_ALLOWLIST, "");
+    }
+
+    /**
+     * The newline-separated denylist command prefixes.
+     *
+     * @param prefs to read from
+     *
+     * @return the raw list; defaults to an empty String
+     */
+    @NonNull
+    public static String getAdbBridgeDenylist(@NonNull final SharedPreferences prefs) {
+        return prefs.getString(ADB_BRIDGE_DENYLIST, "");
     }
 
     /**

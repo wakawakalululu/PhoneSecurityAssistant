@@ -96,6 +96,26 @@
         </service>
 
         <service
+            android:name=".adb.bridge.AdbBridgeSshdService"
+            android:description="@string/adb_bridge_sshd_service_description"
+            android:foregroundServiceType="specialUse"
+            android:label="@string/adb_bridge_sshd_service_name">
+            <property
+                android:name="android.app.PROPERTY_SPECIAL_USE_FGS_SUBTYPE"
+                android:value="adb bridge sshd: a second dropbear instance for remote ADB command bridging requires 'special-use' to be useful at all" />
+        </service>
+
+        <service
+            android:name=".adb.bridge.AdbBridgeService"
+            android:description="@string/adb_bridge_service_description"
+            android:foregroundServiceType="specialUse"
+            android:label="@string/adb_bridge_service_name">
+            <property
+                android:name="android.app.PROPERTY_SPECIAL_USE_FGS_SUBTYPE"
+                android:value="adb bridge ipc: a LocalSocket server executing remote ADB commands requires 'special-use' to be useful at all" />
+        </service>
+
+        <service
             android:name=".remotedesktop.RemoteDesktopService"
             android:description="@string/rd_service_description"
             android:foregroundServiceType="mediaProjection|specialUse"

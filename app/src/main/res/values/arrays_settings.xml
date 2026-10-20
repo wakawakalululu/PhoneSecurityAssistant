@@ -17,4 +17,18 @@
         <item>adb</item>
     </string-array>
 
+    <!-- 单选：远程 ADB 桥接命令策略模式显示名称。 -->
+    <string-array name="adb_bridge_policy_entries">
+        <item>@string/pe_adb_bridge_policy_allowlist</item>
+        <item>@string/pe_adb_bridge_policy_denylist</item>
+        <item>@string/pe_adb_bridge_policy_open</item>
+    </string-array>
+
+    <!-- 单选：远程 ADB 桥接命令策略模式存储值（ALLOWLIST/DENYLIST/OPEN）。 -->
+    <string-array name="adb_bridge_policy_values">
+        <item>ALLOWLIST</item>
+        <item>DENYLIST</item>
+        <item>OPEN</item>
+    </string-array>
+
 </resources>

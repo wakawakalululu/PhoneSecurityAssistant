@@ -57,9 +57,9 @@
 > **注意**：应用**不会**启动 rsync daemon。客户端通过 SSH 调用远端 `rsync`
 > 完成同步（即常见的 `rsync -e ssh` 用法）。
 
-rsync-over-SSH 由远端客户端发起。只读 WebDAV SAF Provider 已随 APK 成功编译并打包
-（HTTPS + Basic 认证、目录浏览与文件流式读取）；尚未进行真实 WebDAV 服务的真机互操作
-测试，App 内 rclone 文件同步已实现（MVP，含定时调度、重启恢复与完成通知）。
+rsync-over-SSH 由远端客户端发起。只读 WebDAV SAF Provider 与 App 内 rclone 文件同步
+均已实现（MVP：WebDAV 只读浏览/流式读取；rclone 单向 copy、定时调度、重启恢复、完成通知），
+但尚未通过 Gradle 编译或真机验证（CI 当前在 assemble 步骤失败），不应视为已发布能力。
 
 服务端地址、凭据、权限模式、自启与远程工具启停均可在 App 的「设置」和对应管理页面配置。frpc、Tailscale 与哪吒的运行配置由 App 自动生成，无需手动编辑 TOML/YAML 文件。
 
@@ -80,7 +80,7 @@ rsync-over-SSH 由远端客户端发起。只读 WebDAV SAF Provider 已随 APK 
 | 内网穿透 | frpc（frp v0.65.0） | 自动生成 `frpc.toml`，把本机 sshd 端口映射到公网 frps 服务器 |
 | 组网 | Tailscale（tailscaled/tailscale 1.90.6） | 用户态模式（免 Root）或 TUN 模式（需要 Root）；支持授权密钥、hostname、连接/状态/断开 |
 | 监控上报 | 哪吒监控 agent（v2.3.5） | 生成 `nezha-agent.yml`，向哪吒面板上报设备状态；可禁止面板远程执行命令；有上报/日志面板 |
-| 文件同步 | rclone（v1.69.3） | 单向 copy（SFTP/WebDAV ↔ 本地目录），任务 CRUD、进度/日志/取消；不做双向同步与删除传播 |
+| 文件同步 | rclone（v1.69.3） | 单向 copy（SFTP/WebDAV ↔ 本地目录），任务 CRUD、进度/日志/取消；**MVP，待编译/真机验证**；不做双向同步与删除传播 |
 | 远程与监控 | 前台服务 | frpc / Tailscale / 哪吒 agent 的独立启停、状态与实时日志；可选择随 sshd 服务一起启动 |
 | 后台运行 | 前台服务 | 切到后台后服务继续运行（显示常驻通知） |
 | | 开机自启 / 打开应用自启 | 可在设置中开关 |

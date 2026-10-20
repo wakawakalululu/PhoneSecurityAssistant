@@ -73,4 +73,25 @@
     <string name="pc_key_management">已授权密钥</string>
     <string name="lbl_import_keys_file">从文件导入</string>
     <string name="lbl_import_keys_url">从 URL 导入</string>
+
+    <!-- Remote ADB command bridge. -->
+    <string name="ui_adb_bridge">远程 ADB</string>
+    <string name="adb_bridge_sshd_service_name">春夏秋手机安全助手 远程 ADB 桥接</string>
+    <string name="adb_bridge_sshd_service_description">运行第二个 dropbear 实例用于远程 ADB 命令桥接。</string>
+    <string name="adb_bridge_service_name">春夏秋手机安全助手 ADB 桥接执行</string>
+    <string name="adb_bridge_service_description">通过 LocalSocket 接收并执行远程 ADB 命令。</string>
+    <string name="adb_bridge_notification_running">远程 ADB 桥接运行中</string>
+    <string name="adb_bridge_err_disabled">远程 ADB 桥接未启用</string>
+    <string name="adb_bridge_err_not_authorized">未授权的 SSH 身份</string>
+    <string name="adb_bridge_err_denied">命令被策略拒绝</string>
+    <string name="adb_bridge_err_not_connected">ADB 未连接，不降级执行</string>
+    <string name="adb_bridge_err_interrupted">执行被中断</string>
+    <string name="st_pc_adb_bridge">远程 ADB 桥接</string>
+    <string name="st_pt_adb_bridge_enabled">启用远程 ADB 桥接</string>
+    <string name="st_pt_adb_bridge_port">桥接 SSH 端口</string>
+    <string name="st_pt_adb_bridge_policy_mode">命令策略模式</string>
+    <string name="adb_bridge_menu_hint">远程 ADB 桥接通过第二个 SSH 端口将远端命令转发到本机无线调试 ADB。请在「设置 → 远程 ADB 桥接」中启用，并配置独立的授权密钥与命令策略。</string>
+    <string name="pe_adb_bridge_policy_allowlist">白名单（仅允许匹配前缀）</string>
+    <string name="pe_adb_bridge_policy_denylist">黑名单（仅拒绝匹配前缀）</string>
+    <string name="pe_adb_bridge_policy_open">全开放（允许全部命令）</string>
 </resources>

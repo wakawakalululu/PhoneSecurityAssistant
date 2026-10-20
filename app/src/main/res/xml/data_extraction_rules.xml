@@ -15,6 +15,12 @@
             path="./adb" />
         <exclude
             domain="file"
+            path="./adb-bridge" />
+        <exclude
+            domain="file"
+            path="./.adb-bridge" />
+        <exclude
+            domain="file"
             path="./dropbear/dropbear.pid" />
         <exclude
             domain="file"

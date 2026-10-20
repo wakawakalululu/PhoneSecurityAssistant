@@ -1,13 +1,13 @@
 # 春夏秋手机安全助手 打包与 OpenCode 交接说明
 
-更新日期：2026-10-17
+更新日期：2026-10-20
 
 ## 当前状态
 
 - OpenCode 工作区位于 `/workspaces/Sshd4a`；`local.properties` 指向 `/tmp/opencode/android-sdk`，但该 SDK 当前不存在，`ANDROID_HOME`/`ANDROID_SDK_ROOT` 也未设置。
 - `local.properties` 已被 `.gitignore` 忽略，SDK 路径属于本机配置，不应提交或复制到其他机器。
 - 2026-10-17 曾为当时源码生成 debug/release APK；这些 APK 不包含后续添加的 WebDAV Provider。
-- `LICENSE` 当前显示为删除，删除来源未明，需由维护者确认；没有擅自恢复。
+- `LICENSE` 已于 2026-10-19 提交 d602c5b 恢复为 MIT License。
 - 本次 WebDAV 变更未完成 Android 编译或真机验证；`get_errors` 静态诊断与 `git diff --check` 通过。
 - 此前源码的 Android 资源处理及 debug/release 组装曾通过；未进行真机功能测试或 CI 运行。
 
@@ -127,7 +127,7 @@ App 内至少可配置远端 URL/协议、凭据、TLS 校验、路径、本地�
 
 工作流 `.github/workflows/build-apk.yml` 配置为在 `main`/`master` push、PR、`v*` 标签和手动触发时构建。它会下载 Go 辅助二进制、生成 native 预构建文件、执行 `assembleDebug assembleRelease`，并上传 APK artifacts；推送 `v*` 标签时还会创建 GitHub Release。签名是可选的。
 
-该工作流当前仍是本地未跟踪改动，需先由维护者决定是否纳入版本控制并推送，之后才能通过 GitHub Actions 验证。工作流成功运行前，不应把 APK 产物或发布流程描述为已验证。
+该工作流已于 2026-10-19 提交（d602c5b / 6449d38），但 GitHub Actions 4 次运行均失败在 `Assemble debug + release APKs` 步骤，APK 未成功构建。构建通过前不应把产物或发布流程描述为已验证。
 
 ## 后续处理清单
 
@@ -136,7 +136,7 @@ App 内至少可配置远端 URL/协议、凭据、TLS 校验、路径、本地�
 3. 在 SDK 恢复后编译并验证 WebDAV Provider；随后实现 App 管理的单向同步 MVP，再评估定时同步。同步及 WebDAV 写能力完成并真机验证前不得在 README 中列为现有能力。
 4. 如需本地多 ABI APK，运行 `tools/fetch-go-binaries.sh armeabi-v7a arm64-v8a x86_64 x86` 并核验；x86 没有上游 frpc。
 5. 配置正式 release keystore/secrets，使用 `apksigner verify --verbose --print-certs` 验证签名。
-6. 审阅未提交改动（尤其 `LICENSE` 删除），确认后提交 workflow 并运行 GitHub Actions；仓库当前无 remote，尚不能触发 CI。
+6. 修复 CI 构建失败（`Assemble` 步骤，4 次连续 failure），使 GitHub Actions 转绿；`LICENSE` 已恢复、workflow 已提交、remote 已配置。
 
 ## 相关文件
 
