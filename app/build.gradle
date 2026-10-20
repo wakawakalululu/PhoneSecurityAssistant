@@ -1,5 +1,3 @@
-import org.jetbrains.kotlin.gradle.dsl.JvmTarget
-
 plugins {
     alias libs.plugins.android.application
 }
@@ -25,15 +23,6 @@ if (project.hasProperty("Sshd4a.properties")) {
 java {
     toolchain {
         languageVersion = JavaLanguageVersion.of(libs.versions.javaToolchain.get())
-    }
-}
-
-kotlin {
-    jvmToolchain {
-        languageVersion.set(JavaLanguageVersion.of(libs.versions.javaToolchain.get()))
-    }
-    compilerOptions {
-        jvmTarget = JvmTarget.JVM_11
     }
 }
 

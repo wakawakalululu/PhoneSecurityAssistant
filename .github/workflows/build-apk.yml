@@ -41,7 +41,7 @@
 # TOOLCHAIN (keep in sync with gradle/libs.versions.toml)
 #   JDK 25 (Temurin) - Gradle 9.7.1 via wrapper (distributionSha256Sum verified)
 #   AGP 9.3.2 - compileSdk/targetSdk 36 - minSdk 26
-#   NDK 30.0.14904198 - CMake 4.1.2 - build-tools 36.0.0
+#   NDK 30.0.16248370 (stable) - CMake 4.1.2 - build-tools 36.0.0
 #   ...installed with those EXACT versions via sdkmanager.
 #
 # CACHING (one mechanism per resource, deliberately)
@@ -100,7 +100,7 @@ env:
   JAVA_VERSION: '25'
   COMPILE_SDK: '36'
   BUILD_TOOLS_VERSION: '36.0.0'
-  NDK_VERSION: '30.0.14904198'
+  NDK_VERSION: '30.0.16248370'
   CMAKE_VERSION: '4.1.2'
   # Bump to invalidate the cached Go helper binaries (key component).
   GO_BINARIES_CACHE_VERSION: 'v1'
