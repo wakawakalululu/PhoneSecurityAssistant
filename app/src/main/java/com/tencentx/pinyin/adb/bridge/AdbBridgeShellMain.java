@@ -39,7 +39,7 @@ public final class AdbBridgeShellMain {
     public static void main(final String[] args) {
         try {
             run(args);
-        } catch (@NonNull final Throwable t) {
+        } catch (final Throwable t) {
             System.err.println("adb-bridge: " + t);
             System.exit(1);
         }

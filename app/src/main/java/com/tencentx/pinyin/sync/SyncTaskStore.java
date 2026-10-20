@@ -121,7 +121,7 @@ public final class SyncTaskStore {
         }
         //noinspection OverlyBroadCatchBlock
         try {
-            final String json = Files.readString(file.toPath(), StandardCharsets.UTF_8);
+            final String json = new String(Files.readAllBytes(file.toPath()), StandardCharsets.UTF_8);
             final JSONArray array = new JSONArray(json);
             for (int i = 0; i < array.length(); i++) {
                 final SyncTask task = fromJson(array.getJSONObject(i));
